@@ -69,6 +69,24 @@ class TOPSolutionData(vrpdata.VrpSolutionData):
                              'node sequence': nodes}
                 self.routes.append(thisRoute)
 
+class TOPStudentSolutionData(vrpdata.VrpSolutionData):
+    problemType = 'TOP'
+    solutionType = 'students'
+    # load a TOP solution in the format used by students
+    def loadData(self, fName, vrpData):
+        # add vehicle load information
+        self.routeAttributes += [ 'node sequence' ]
+        # all routes in the solution (lists of indices)
+        self.routes = []
+        for line in file.readlines(file(fName)):
+            tokens = line.split()
+            if tokens[0] == 'route' and tokens[1][-1] == ':':
+                nodes = eval('[' + tokens[2] + ']')
+                print nodes
+                thisRoute = {'index': string.atoi(tokens[1][:-1]),
+                             'node sequence': nodes}
+                self.routes.append(thisRoute)
+                
 # style for displaying TOP
 class TOPStyleSheet(stylesheet.StyleSheet):
     defaultFor = [ 'TOP' ]
