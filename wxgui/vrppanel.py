@@ -207,13 +207,21 @@ class VrpPanel(wx.Panel):
         value = 1 if event.GetWheelRotation() > 0 else -1
         x, y = event.GetPosition()
         x, y = self.revX(x), self.revY(self.GetClientSizeTuple()[1] - y)
+        width = self.styleSheet.xmax - self.styleSheet.xmin
+        height = self.styleSheet.ymax - self.styleSheet.ymin
+        dx1 = x - (self.styleSheet.xmin + width / 2.0)
+        dy1 = y - (self.styleSheet.ymin + height / 2.0)
         # zoom in or out depending on whether we scrolled up or down
         factor = zoomFactor ** value
         # new width and height in inputData coordinates
         newWidth = (self.styleSheet.xmax - self.styleSheet.xmin) / factor
         newHeight = (self.styleSheet.ymax - self.styleSheet.ymin) / factor
+        dx2 = dx1 * newWidth / width
+        dy2 = dy1 * newHeight / height
+        newCentreX = x - dx2
+        newCentreY = y - dy2
         # update the view
-        self.updateView(x, y, newWidth, newHeight)
+        self.updateView(newCentreX, newCentreY, newWidth, newHeight)
         self.rePaint()
 
     # this method updates the view so that it s around coordinates x, y and with
