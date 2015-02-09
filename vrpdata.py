@@ -326,7 +326,7 @@ class VrpSolutionData(object):
             # now the successors are filled, we just need to follow them
             sequence = [ startingPoint ]
             next = successor[startingPoint]
-            while next != -1 and next != startingPoint:
+            while next != -1 and next != startingPoint and not next in sequence:
                 sequence.append(next)
                 next = successor[next]
             if next == startingPoint:

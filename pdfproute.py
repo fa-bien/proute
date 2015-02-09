@@ -45,9 +45,9 @@ if __name__ == '__main__':
             solutionSubtype = 'default'
             solutionFileName = sys.argv[3]
         # in case an output file name is provided
-        if sys.argv[3][0] == ':' and len(sys.argv) == 6 or len(sys.argv) == 5:
+        if (sys.argv[3][0] == ':' and len(sys.argv) == 6) or \
+           (sys.argv[3][0] != ':' and len(sys.argv) == 5):
             outputFileName = sys.argv[-1]
-        print len(sys.argv)
         # loader object to load all of this
         loader = loaddata.DataLoader()
         # here we load the data

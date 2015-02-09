@@ -115,15 +115,17 @@ class CVRPSolutionData(vrpdata.VrpSolutionData):
         self.routes = []
         # process each line
         for line in file.readlines(file(fName)):
+            print line
             line = line.split()
             if line[0] != 'route:':
                 continue
             else:
+                print line
                 thisRoute = {}
                 thisRoute['index'] = len(self.routes)
                 thisRoute['node sequence'] = eval('[' + line[1] + ']')
                 self.routes.append(thisRoute)
-
+                
 class VRPLIBSolutionData(vrpdata.VrpSolutionData):
     problemType = 'CVRP'
     solutionType = 'vrplib'

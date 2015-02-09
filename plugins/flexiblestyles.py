@@ -4,6 +4,7 @@
 # Last modified: February 10th 2013 by Fabien Tricoire
 #
 import sys
+import math
 
 from style import *
 
@@ -518,6 +519,9 @@ class FlexibleNodeDisplayer( Style ):
 class FlexibleArcDisplayer( Style ):
     description = 'customizable arcs'
     parameterInfo = {
+        'show direction': BoolParameterInfo(),
+        'arrow length': FloatParameterInfo(0, 100),
+        'arrow angle': IntParameterInfo(0, 180),
         'min. thickness': IntParameterInfo(1, 200),
         'max. thickness': IntParameterInfo(1, 200),
         'colouring': EnumerationParameterInfo([ 'constant',
@@ -531,6 +535,9 @@ class FlexibleArcDisplayer( Style ):
         'gradient max. value': FloatParameterInfo(-sys.maxint, sys.maxint),
         }
     defaultValue = {
+        'show direction': False,
+        'arrow length': 20,
+        'arrow angle': 30,
         'min. thickness': 1,
         'max. thickness': 3,
         'colouring': 'constant',
@@ -646,6 +653,9 @@ class FlexibleArcDisplayer( Style ):
         # build the list of all arcs to display
         arcsToDisplay = []
         allArcs = []
+        angleInRadians = math.pi * self.parameterValue['arrow angle'] / 180
+        myCos = math.cos(angleInRadians)
+        mySin = math.sin(angleInRadians)
         for route in solutionData.routes:
             if routePredicate is None or routePredicate(route):
                 for arc in route['arcs']:
@@ -696,6 +706,26 @@ class FlexibleArcDisplayer( Style ):
                     y1s.append(convertY(node1['y']))
                     x2s.append(convertX(node2['x']))
                     y2s.append(convertY(node2['y']))
+                    # draw an arrow for direction
+                    if self.parameterValue['show direction']:
+                        x1, y1, x2, y2 = x1s[-1], y1s[-1], x2s[-1], y2s[-1]
+                        u, v = x1 - x2, y1 - y2
+                        d = math.hypot(u, v)
+                        ratio = self.parameterValue['arrow length'] / d
+                        x1a = x2 + (myCos * u - mySin * v) * ratio
+                        y1a = y2 + (mySin * u + myCos * v) * ratio
+                        x2a = x2 + (myCos * u + mySin * v) * ratio
+                        y2a = y2 + ( - mySin * u + myCos * v) * ratio
+                        # first line of the arrow
+                        x1s.append(x2)
+                        y1s.append(y2)
+                        x2s.append(x1a)
+                        y2s.append(y1a)
+                        # second line of the arrow
+                        x1s.append(x2)
+                        y1s.append(y2)
+                        x2s.append(x2a)
+                        y2s.append(y2a)
             # now draw all arcs at once
             canvas.drawLines(x1s, y1s, x2s, y2s, style)
         # otherwise we must use a different style for each node
@@ -719,8 +749,19 @@ class FlexibleArcDisplayer( Style ):
                 node2 = inputData.nodes[arc['to']]
                 if self.parameterValue['draw depot arcs'] or\
                         ( not node1['is depot'] and not node2['is depot'] ):
-                    canvas.drawLine(convertX(node1['x']),
-                                    convertY(node1['y']),
-                                    convertX(node2['x']),
-                                    convertY(node2['y']),
-                                    style)
+                    x1, y1 = convertX(node1['x']), convertY(node1['y'])
+                    x2, y2 = convertX(node2['x']), convertY(node2['y'])
+                    canvas.drawLine(x1, y1, x2, y2, style)
+                    # draw an arrow for direction
+                    if self.parameterValue['show direction']:
+                        u, v = x1 - x2, y1 - y2
+                        d = math.hypot(u, v)
+                        ratio = self.parameterValue['arrow length'] / d
+                        x1a = x2 + (myCos * u - mySin * v) * ratio
+                        y1a = y2 + (mySin * u + myCos * v) * ratio
+                        x2a = x2 + (myCos * u + mySin * v) * ratio
+                        y2a = y2 + ( - mySin * u + myCos * v) * ratio
+                        # first line of the arrow
+                        canvas.drawLine(x2, y2, x1a, y1a, style)
+                        # second line of the arrow
+                        canvas.drawLine(x2, y2, x2a, y2a, style)
