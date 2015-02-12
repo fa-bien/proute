@@ -742,7 +742,8 @@ class FlexibleArcDisplayer( Style ):
                 colour = self.colourMapping[arc[cAttr]] \
                     if self.parameterValue['colouring'] != 'constant'\
                     else self.parameterValue['arc colour'][0]
-                styles.append( DrawingStyle( colour, colour, thickness ) )
+                styles.append( DrawingStyle( lineColour=colour,
+                                             lineThickness=thickness ) )
             # now we can display each arc separately
             for arc, style in zip(arcsToDisplay, styles):
                 node1 = inputData.nodes[arc['from']]
@@ -755,7 +756,7 @@ class FlexibleArcDisplayer( Style ):
                     # draw an arrow for direction
                     if self.parameterValue['show direction']:
                         if x1 == x2 and y1 == y2:
-                            pass
+                            canvas.drawCircle(x1-10, y1, 10, style)
                         else:
                             u, v = x1 - x2, y1 - y2
                             d = math.hypot(u, v)

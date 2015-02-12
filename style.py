@@ -132,7 +132,7 @@ class DrawingStyle:
                  fillColour=None,
                  lineThickness=None,
                  lineStyle='solid'):
-        self._lineColour = lineColour
+        self.lineColour = lineColour
         self.lineThickness = lineThickness
         self.fillColour = fillColour
         self.lineStyle=lineStyle
@@ -144,7 +144,7 @@ class DrawingStyle:
         elif self.lineThickness <= 0:
             return Colour(0, 0, 0, 0)
         else:
-            return self._lineColour
+            return self.lineColour
 
     # property that returns the right line colour depending on thickness
     lineColour = property(getLineColour)
