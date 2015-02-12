@@ -754,14 +754,17 @@ class FlexibleArcDisplayer( Style ):
                     canvas.drawLine(x1, y1, x2, y2, style)
                     # draw an arrow for direction
                     if self.parameterValue['show direction']:
-                        u, v = x1 - x2, y1 - y2
-                        d = math.hypot(u, v)
-                        ratio = self.parameterValue['arrow length'] / d
-                        x1a = x2 + (myCos * u - mySin * v) * ratio
-                        y1a = y2 + (mySin * u + myCos * v) * ratio
-                        x2a = x2 + (myCos * u + mySin * v) * ratio
-                        y2a = y2 + ( - mySin * u + myCos * v) * ratio
-                        # first line of the arrow
-                        canvas.drawLine(x2, y2, x1a, y1a, style)
-                        # second line of the arrow
-                        canvas.drawLine(x2, y2, x2a, y2a, style)
+                        if x1 == x2 and y1 == y2:
+                            pass
+                        else:
+                            u, v = x1 - x2, y1 - y2
+                            d = math.hypot(u, v)
+                            ratio = self.parameterValue['arrow length'] / d
+                            x1a = x2 + (myCos * u - mySin * v) * ratio
+                            y1a = y2 + (mySin * u + myCos * v) * ratio
+                            x2a = x2 + (myCos * u + mySin * v) * ratio
+                            y2a = y2 + ( - mySin * u + myCos * v) * ratio
+                            # first line of the arrow
+                            canvas.drawLine(x2, y2, x1a, y1a, style)
+                            # second line of the arrow
+                            canvas.drawLine(x2, y2, x2a, y2a, style)
