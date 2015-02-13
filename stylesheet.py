@@ -316,13 +316,14 @@ class StyleSheet(object):
                 (nodePredicate is None or nodePredicate(node))
             # display all styles sequentially
             for style in self.styles:
-                style.paintData(inputData, solutionData,
-                                canvas, convertX, convertY,
-                                newNodePredicate,
-                                newRoutePredicate,
-                                arcPredicate,
-                                (revX(xmin-padding+2), revY(ymin-padding+2),
-                                 revX(xmax+padding-2), revY(ymax+padding-2))
+                if i == 0 or not style.oncePerGrid:
+                    style.paintData(inputData, solutionData,
+                                    canvas, convertX, convertY,
+                                    newNodePredicate,
+                                    newRoutePredicate,
+                                    arcPredicate,
+                                    (revX(xmin-padding+2), revY(ymin-padding+2),
+                                     revX(xmax+padding-2), revY(ymax+padding-2))
                                 )
             # allow to draw everywhere again
             canvas.unrestrictDrawing()

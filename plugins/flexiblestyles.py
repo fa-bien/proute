@@ -657,17 +657,17 @@ class FlexibleArcDisplayer( Style ):
         myCos = math.cos(angleInRadians)
         mySin = math.sin(angleInRadians)
         for route in solutionData.routes:
-            if routePredicate is None or routePredicate(route):
                 for arc in route['arcs']:
-                    if arcPredicate is None or arcPredicate(arc):
+                    if (routePredicate is None or routePredicate(route)) \
+                       and (arcPredicate is None or arcPredicate(arc)):
                         value = arc[self.parameterValue['filter attribute']]
                         if not isinstance(value, str):
                             value = str(value)
                         if not self.parameterValue['filter active'] or \
-                                value == self.parameterValue['filter value']:
+                           value == self.parameterValue['filter value']:
                             arcsToDisplay.append(arc)
-                        # keep track of filtered arcs too
-                        allArcs.append(arc)
+                    # keep track of filtered arcs too
+                    allArcs.append(arc)
         # compute min and max demand if required
         if self.computeThickness is None:
             self.tValues = [ arc[self.parameterValue['thickness attribute']]
@@ -709,23 +709,26 @@ class FlexibleArcDisplayer( Style ):
                     # draw an arrow for direction
                     if self.parameterValue['show direction']:
                         x1, y1, x2, y2 = x1s[-1], y1s[-1], x2s[-1], y2s[-1]
-                        u, v = x1 - x2, y1 - y2
-                        d = math.hypot(u, v)
-                        ratio = self.parameterValue['arrow length'] / d
-                        x1a = x2 + (myCos * u - mySin * v) * ratio
-                        y1a = y2 + (mySin * u + myCos * v) * ratio
-                        x2a = x2 + (myCos * u + mySin * v) * ratio
-                        y2a = y2 + ( - mySin * u + myCos * v) * ratio
-                        # first line of the arrow
-                        x1s.append(x2)
-                        y1s.append(y2)
-                        x2s.append(x1a)
-                        y2s.append(y1a)
-                        # second line of the arrow
-                        x1s.append(x2)
-                        y1s.append(y2)
-                        x2s.append(x2a)
-                        y2s.append(y2a)
+                        if x1 == x2 and y1 == y2:
+                            canvas.drawCircle(x1-10, y1, 10, style)
+                        else:
+                            u, v = x1 - x2, y1 - y2
+                            d = math.hypot(u, v)
+                            ratio = self.parameterValue['arrow length'] / d
+                            x1a = x2 + (myCos * u - mySin * v) * ratio
+                            y1a = y2 + (mySin * u + myCos * v) * ratio
+                            x2a = x2 + (myCos * u + mySin * v) * ratio
+                            y2a = y2 + ( - mySin * u + myCos * v) * ratio
+                            # first line of the arrow
+                            x1s.append(x2)
+                            y1s.append(y2)
+                            x2s.append(x1a)
+                            y2s.append(y1a)
+                            # second line of the arrow
+                            x1s.append(x2)
+                            y1s.append(y2)
+                            x2s.append(x2a)
+                            y2s.append(y2a)
             # now draw all arcs at once
             canvas.drawLines(x1s, y1s, x2s, y2s, style)
         # otherwise we must use a different style for each node

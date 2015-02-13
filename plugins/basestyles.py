@@ -432,6 +432,10 @@ class SolutionAttributesDisplayer( Style ):
                      'font family': 'Verdana',
                      'font style': 'normal',
                      }
+    #
+    def initialise(self):
+        self.oncePerGrid = True
+    #
     def processAttributes(self, solutionData):
         for attribute in solutionData.attributes:
             if not 'display ' + attribute in self.parameterInfo:

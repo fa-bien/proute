@@ -225,6 +225,13 @@ class ColourMapEditor(wx.Dialog):
         controlSizer.Add(spreadButton, 0)
         spreadButton.Bind(wx.EVT_BUTTON,
                           lambda x: self.spreadColours(quantitySpin.GetValue()))
+        # another button to generate spread colours
+        cleverSpreadButton = wx.Button(self, -1, 'Clever spread')
+        controlSizer.Add((20,0), 1)
+        controlSizer.Add(cleverSpreadButton, 0)
+        cleverSpreadButton.Bind(wx.EVT_BUTTON,
+                          lambda x: \
+                            self.cleverSpreadColours(quantitySpin.GetValue()))
         # now we can add standard buttons to validate/cancel
         mainSizer.Add(controlSizer, 0, wx.ALIGN_CENTER)
         mainSizer.Add((0,padding), 0)
@@ -270,3 +277,8 @@ class ColourMapEditor(wx.Dialog):
     # generate spread colours
     def spreadColours(self, n):
         self.setColours(style.generateSpreadColours(n))
+
+    # more clever spread of colours
+    def cleverSpreadColours(self, n):
+        self.setColours(style.generateCleverSpreadColours(n))
+        

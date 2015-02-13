@@ -40,6 +40,33 @@ class Colour():
         return self.__module__ + '.Colour(' + str(self.red) + ',' + \
             str(self.green) + ',' + str(self.blue) + ',' + str(self.alpha) + ')'
 
+# create a RGB colour from HSV values
+# H in [0, 1), S in [0, 1], V in [0, 1]
+class HSVColour(Colour):
+    def __init__(self, H, S, V):
+        C = V * S
+        Hprime = H * 6
+        X = C * (1 - math.fabs(Hprime % 2 - 1))
+        if Hprime < 1:
+            R, G, B = C, X, 0
+        elif Hprime < 2:
+            R, G, B = X, C, 0
+        elif Hprime < 3:
+            R, G, B = 0, C, X
+        elif Hprime < 4:
+            R, G, B = 0, X, C
+        elif Hprime < 5:
+            R, G, B = X, 0, C
+        elif Hprime < 6:
+            R, G, B = C, 0, X
+        else:
+            print 'incorrect H, S, V values:', H, S, V
+        m = V - C
+        self.red = int (255 * (R + m))
+        self.green = int (255 * (G + m))
+        self.blue = int (255 * (B + m))
+        self.alpha = 255
+    
 # this class encapsulates a list of colours
 class ColourMap():
     def __init__(self, colours=[]):
@@ -103,6 +130,16 @@ def generateSpreadColours(k):
 #         blue = (c & blueMask) >> 16
 #         result.append(Colour(red, green, blue, 255))
 #     return ColourMap(result)
+
+# generate k colours spread using H,S,V space and golden ratio
+def generateCleverSpreadColours(k):
+    # our first colour: a bright red
+    H, S, V = 0, 1.0, 1.0
+    # our first colour: a bright blue
+    H, S, V = .6, .99, .99
+    silverRatio = 2.0 / (1 + math.sqrt(5))
+    return ColourMap( [ HSVColour((H + silverRatio * x) % 1, S, V)
+                        for x in xrange(k) ] )
 
 # generate k random colours
 def generateRandomColours(k):
@@ -178,6 +215,8 @@ class Style( object ):
     def __init__(self, parameters={}, description=None):
         self.parameterValue = {}
         self.parameterInfo = {}
+        # does this style have to be drawn only once if in a grid?
+        self.oncePerGrid = False
         if description is None:
             self.description = self.__class__.description
         else:
