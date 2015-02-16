@@ -96,7 +96,7 @@ def generateSpreadColours(k):
                                           ]),
                                [0, 1],
                                )
-    step = 1.0 / k
+    step = 1.0 / max(1, k-1)
     for i in range(k):
         result.append(g[i*step])
     return ColourMap(result)
