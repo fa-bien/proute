@@ -1,7 +1,7 @@
 #
 # File created during the fall of 2010 (northern hemisphere) by Fabien Tricoire
 # fabien.tricoire@univie.ac.at
-# Last modified: August 7th 2011 by Fabien Tricoire
+# Last modified: March 6th 2015 by Fabien Tricoire
 #
 import wx
 
@@ -79,7 +79,7 @@ class StyleSheetEditor(wx.Panel):
         sizer.Add(self.styleCheckList, 0, wx.EXPAND)
         # we also add four buttons for manipulating styles
         # for that we use a grid
-        grid = wx.GridSizer(2, 2, 10, 10)
+        grid = wx.GridSizer(0, 2, 10, 10)
         self.addButton = wx.Button(self, wx.ID_ADD)
         self.removeButton = wx.Button(self, wx.ID_REMOVE)
         self.removeButton.Disable()

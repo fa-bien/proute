@@ -1,7 +1,7 @@
 #
 # File created during the fall of 2010 (northern hemisphere) by Fabien Tricoire
 # fabien.tricoire@univie.ac.at
-# Last modified: August 3rd 2011 by Fabien Tricoire
+# Last modified: March 6th 2015 by Fabien Tricoire
 #
 import os
 
@@ -25,7 +25,7 @@ class LoadDataDialog(wx.Dialog):
         self.loader = loaddata.DataLoader()
         availableTypes = self.loader.getAvailableTypes()
         # layout for this dialog
-        mainSizer = wx.GridSizer(2, 2, 10, 10)
+        mainSizer = wx.GridSizer(0, 2, 10, 10)
         # first line: problem type
         label = wx.StaticText(self, -1, 'Problem type:')
         self.typeChoice = wx.Choice(self, -1,
