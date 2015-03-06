@@ -1,0 +1,26 @@
+proute input file v1,
+# The first line is mandatory, must start with "proute input file v", then
+# a version number for the file format (so far only v1 exists). The last
+# character of the first line is very important: it is used as field separator
+# in the following lines.
+# Each line starting with a hash sign is ignored, by the way.
+# The second line specifies a list of attributes that will be specified for
+# each node.
+# Specified values will be evaluated in python. This means that acceptable
+# values for booleans are True and False. There is a tolerance with strings,
+# so it's not mandatory to use quotes. For instance all following three values
+# are acceptable: a string 'a string' "a string". The first one will not work
+# if space is the separating character though.
+ID,x,y,demand,release time,due date,is depot
+# After that, each line with the same number of fields specifies information
+# for a node; any line starting with the field separator and with two fields
+# describes global attributes for this instance.
+# The following three lines describe nodes:
+depot,0,0,0,0,100,True
+customer 1,-12,30,10,10,50,False
+customer 2,20,1,10,0,30,False
+customer 3,-20,-20,7,10,40,False
+customer 4,10,-30,8,30,80,False
+# The next two lines describe global instance attributes:
+,capacity,20
+,maximum length,90

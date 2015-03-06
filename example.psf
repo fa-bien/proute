@@ -1,0 +1,58 @@
+proute solution file v1;
+# The first line is mandatory, must start with "proute solution file v", then
+# a version number for the file format (so far only v1 exists). The last
+# character of the first line is very important: it is used as field separator
+# in the following lines. It is not recommended to use the comma as separator,
+# since it prevents to use the very common and useful attribute 'node sequence'
+# which is a list with comma-separated elements.
+# Each line starting with a hash sign is ignored, by the way.
+# The file is organized by route sections, i.e. route after route. For each
+# route a first line indicates basic attributes like cost, duration.
+# Then optionally arcs can be specified, one per line (with e.g. load).
+# Then, also optionally, node information inside routes can be specified, one
+# per line (with e.g. quantity delivered by this route to this node).
+# Finally, extra node information can be specified at any point in the file
+# after the format description lines.
+# Although all this information is optional, the lines specifying information
+# format are mandatory. There are four of these lines for route, arc, routenode
+# and node information. They are now described.
+# The next line gives the format for the routes. The first field is always the
+# keyword 'route'.
+route;node sequence;cost;duration;load
+# The next line gives the format for arcs. The first field is always the
+# keyword 'arc'.
+arc;from;to;load
+# The next line gives the format for node information inside routes. The first
+# field is always the keyword 'routenode'. This line doesn't specify any
+# attribute for node information inside routes.
+routenode;
+# The next line gives the format for extra node information. The first field is
+# always the keyword 'node', the second field is always the keyword 'index'.
+node;index;just before depot
+# At this point, we specify solution attributes by using lines starting with a
+# separator and having two fields.
+;cost;200
+;duration;150
+# From now on, a line can be either route, arc or node information, or a global
+# attribute for the solution. The next line specifies information for a route.
+# Note that the second field is a python list
+route;[0, 1, 2, 0];120;98;20
+# The following lines give more information about the arcs.
+arc;0;1;20
+arc;1;2;10
+arc;2;0;0
+# Please note that all information relative to a route must be given at once.
+# Arc and node information is always relative to the previous 'route' line.
+# Here comes a second route.
+route;[0,3,4,0];80;52;15
+arc;0;3;15
+arc;3;4;8
+arc;4;0;0
+# We now specify extra node information. This information could be specified
+# before too. Such lines start with the keyword 'node', then the node index,
+# then the remaining attributes described earlier in the format line.
+node;0;False
+node;1;False
+node;2;True
+node;3;False
+node;4;True
