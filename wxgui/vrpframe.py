@@ -13,7 +13,12 @@ from wx.lib.wordwrap import wordwrap
 try:
     import Image
 except Exception as e:
-    pass
+    try:
+        # is pillow installed?
+        from PIL import Image
+    except Exception as ee:
+        pass
+    
 try:
     import reportlab
 except Exception as e:

@@ -6,8 +6,15 @@
 import string
 import sys
 
-import Image
-
+try:
+    import Image
+except Exception as e:
+    try:
+        # is pillow installed?
+        from PIL import Image
+    except Exception as ee:
+        pass
+    
 import vrpdata
 import stylesheet
 from style import *
