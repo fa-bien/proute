@@ -230,6 +230,12 @@ class StyleSheet(object):
         # start grid code here!
         if not self.gridRouteAttribute and solutionData.routeAttributes:
             self.gridRouteAttribute = solutionData.routeAttributes[0]
+        # case where a grid is defined but the grid attribute does not exist in
+        # the routes
+        for route in solutionData.routes:
+            if not self.gridRouteAttribute in route:
+                self.gridRouteAttribute = solutionData.routeAttributes[0]
+                break
         # only use a grid if the solution isn't empty
         if self.grid and solutionData.routes:
             # count and sort the occurrences of the grid attribute
