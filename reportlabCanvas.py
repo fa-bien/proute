@@ -57,7 +57,7 @@ class ReportlabCanvas(Canvas):
     def blank(self):
         self.canvas = rlcanvas.Canvas(self.fName)
         self.canvas.setPageSize((self.width, self.height))
-        creatorString = 'proute - http://proute.berlios.de'
+        creatorString = 'proute - https://github.com/fa-bien/proute'
         self.canvas.setCreator(creatorString)
 
     def restrictDrawing(self, xmin, ymin, xmax, ymax):
