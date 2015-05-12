@@ -188,18 +188,18 @@ class BalancedTwoDTree:
 # use a 2D-tree to find the nearest neighbour
 class TwoDTreeNeighbourFinder(NeighbourFinder):
     def __init__(self, vrpData):
-#         print '# elements:', len(vrpData.nodes)
+        print '# elements:', len(vrpData.nodes)
         # construct the 2D-tree
         index, x, y = 0, vrpData.nodes[0]['x'], vrpData.nodes[0]['y']
-        tree = TwoDTree(index, x, y)
-        for i, node in enumerate(vrpData.nodes[1:]):
-            index, x, y = i+1, node['x'], node['y']
-            tree.insert(index, x, y)
-#         print 'unbalanced tree height:', tree.height()
+        # tree = TwoDTree(index, x, y)
+        # for i, node in enumerate(vrpData.nodes[1:]):
+        #     index, x, y = i+1, node['x'], node['y']
+        #     tree.insert(index, x, y)
+        # print 'unbalanced tree height:', tree.height()
         # balanced version
         nodes = [ node for node in vrpData.nodes ]
         balanced = BalancedTwoDTree(nodes)
-#         print 'balanced tree height:', balanced.height()
+        print 'balanced tree height:', balanced.height()
         # choose one
         self.tree = balanced
         # arbitrary value
