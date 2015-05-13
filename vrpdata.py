@@ -249,6 +249,14 @@ class VrpSolutionData(object):
             visitedNodes = set( reduce( lambda x, y: x + y,
                                         [ route['node sequence']
                                           for route in self.routes ] ) )
+            # case where we have arcs but no node sequence
+            for route in self.routes:
+                for arc in route['arcs']:
+                    a, b = arc['from'], arc['to']
+                    if not a in visitedNodes:
+                        visitedNodes.add(a)
+                    if not b in visitedNodes:
+                        visitedNodes.add(b)
         else:
             visitedNodes = set()
         # now we can set for each node whether it's visited or not
