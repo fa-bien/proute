@@ -424,7 +424,7 @@ class RouteAttributeParameterInfo(EnumerationParameterInfo):
         if solutionData.routes:
             route = solutionData.routes[0]
             self.possibleValues = [ x for x in solutionData.routeAttributes
-                                    if acceptable(route[x]) ]
+                                    if x in route and acceptable(route[x]) ]
         else:
             self.possibleValues = []
     def getType(self):
@@ -436,7 +436,7 @@ class ArcAttributeParameterInfo(EnumerationParameterInfo):
         if solutionData.routes:
             arc = solutionData.routes[0]['arcs'][0]
             self.possibleValues = [ x for x in solutionData.routeArcAttributes
-                                    if acceptable(arc[x]) ]
+                                    if x in arc and acceptable(arc[x]) ]
         else:
             self.possibleValues = []
     def getType(self):
