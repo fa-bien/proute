@@ -20,7 +20,7 @@ class GridManager(wx.Frame):
         # style sheet for this window
         self.styleSheet = styleSheet
         # layout for this dialog
-        mainSizer = wx.FlexGridSizer(2, 2, 10, 10)
+        mainSizer = wx.FlexGridSizer(7, 2, 10, 10)
         #
         attributeValues = set([ route[self.styleSheet.gridRouteAttribute]
                                 for route in solutionData.routes ])
