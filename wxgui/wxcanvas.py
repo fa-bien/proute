@@ -247,9 +247,9 @@ class WxCanvas(canvas.Canvas):
     # draw a bitmap using the given north-west corner
     def drawBitmap(self, bitmap, NWcorner):
         image = wx.EmptyImage( *bitmap.size )
-        image.SetData( bitmap.convert("RGB").tostring() )
+        image.SetData( bitmap.convert("RGB").tobytes() )
         # if the image has an alpha channel, you can set it with this line:
-        image.SetAlphaData(bitmap.convert("RGBA").tostring()[3::4])
+        image.SetAlphaData(bitmap.convert("RGBA").tobytes()[3::4])
         x, y = NWcorner
         self.dc.DrawBitmap(image.ConvertToBitmap(), x, self.height-y)
         
