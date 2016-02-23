@@ -142,6 +142,23 @@ class VrpInputData(object):
                                     2)
                               for n1 in self.nodes ]
                             for n2 in self.nodes ]
+
+    # store this instance to a PIF file
+    def storeAsPIF(self, fName, sep=','):
+        f = open(fName, 'w')
+        f.write('proute input file v1' + sep + '\n')
+        # node attributes
+        f.write( reduce( lambda x, y: str(x) + sep + str(y),
+                         self.nodeAttributes ) + '\n')
+        for node in self.nodes:
+            attributes = [ node[a] for a in self.nodeAttributes ]
+            f.write( reduce( lambda x, y: str(x) + sep + str(y),
+                             attributes ) + '\n')
+        # instance attributes
+        for a, v in self.attributes.iteritems():
+            f.write(sep + str(a) + sep + str(v) + '\n')
+        f.close()
+        print 'Stored to', fName
             
 # this class stores solution data for any kind of routing problem
 class VrpSolutionData(object):
