@@ -17,7 +17,7 @@ def fillDict(keys, values):
     for key, value in zip(keys, values):
         # try to eval, if it doesn't work then it's a string...
         try:
-            thisDict[key] = eval(value)
+            thisDict[key] = eval(value.replace('\'', '\\\'').replace('\"', '\\\"'))
         except Exception as e:
             thisDict[key] = value
     return thisDict
