@@ -288,6 +288,8 @@ class VrpFrame(wx.Frame):
             self.browserPanel.solutionBook.loadStyleSheet(newSheet)
             # update style sheet
             self.browserPanel.solutionBook.GetCurrentPage().rePaint()
+            # upate the style sheet of this object
+            self.styleSheet = newSheet
             # the buttons should also be updated
 #             self.updateButtons()
         # in any case, empty the selection in the tree
