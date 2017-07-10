@@ -13,12 +13,16 @@ from math import *
 
 try:
     import Image
+    print 'Loaded PIL'
 except Exception as e:
+    print 'PIL not installed, looking for Pillow'
     try:
         # is pillow installed?
         from PIL import Image
+        print 'Loaded Pillow'
     except Exception as ee:
-        pass
+        print 'Cannot find Pillow! Exiting...'
+        sys.exit(65)
 
 import vrpdata
 import stylesheet

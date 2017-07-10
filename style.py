@@ -137,6 +137,8 @@ def generateCleverSpreadColours(k):
     H, S, V = 0, 1.0, 1.0
     # our first colour: a bright blue
     H, S, V = .6, .99, .99
+    # pastel red
+    H, S, V = .005555555, .5, .95
     silverRatio = 2.0 / (1 + math.sqrt(5))
     return ColourMap( [ HSVColour((H + silverRatio * x) % 1, S, V)
                         for x in xrange(k) ] )
