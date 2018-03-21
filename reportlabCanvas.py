@@ -145,8 +145,8 @@ class ReportlabCanvas(Canvas):
 
     # draw lines with the same style
     def drawLines(self, x1s, y1s, x2s, y2s, style):
-        self.setDrawingStyle(style)
         for x1, y1, x2, y2 in zip(x1s, y1s, x2s, y2s):
+            self.setDrawingStyle(style)
             self.canvas.line(x1, y1, x2, y2)
             # smooth line joints
             thickness = getThickness(style)
