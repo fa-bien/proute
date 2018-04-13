@@ -148,6 +148,7 @@ class NodeAttributeAsRectangleDisplayer( Style ):
         'width': IntParameterInfo(2, 20),
         'max. height': IntParameterInfo(5, 200),
         'colour': ColourParameterInfo(),
+        'filter active': BoolParameterInfo(),
         }
     defaultValue = {
         'x offset': -5,
@@ -157,15 +158,28 @@ class NodeAttributeAsRectangleDisplayer( Style ):
         'max. height': 20,
         'colour': colours.darkorange,
         'attribute': 'demand',
+        'filter active': True,
+        'filter attribute': 'is depot',
+        'filter value': 'False',
         }
     def initialise(self):
         self.minValue = None
-    #
+        # filter value should be a string
+        if 'filter value' in self.parameterValue and \
+                not isinstance(self.parameterValue['filter value'], str):
+            self.parameterValue['filter value'] = \
+                str(self.parameterValue['filter value'])
+    
     def setParameter(self, parameterName, parameterValue):
         Style.setParameter(self, parameterName, parameterValue)
         if parameterName == 'max. height' or parameterName == 'attribute':
             self.minValue = None
-    #
+        # in case we change the attribute on which the filter is based,
+        # we must compute the list of possible values for this attribute
+        if parameterName == 'filter attribute':
+            del self.parameterInfo['filter value']
+            del self.parameterValue['filter value']
+    
     def paint(self, inputData, solutionData,
               canvas, convertX, convertY,
               nodePredicate, routePredicate, arcPredicate,
@@ -179,9 +193,29 @@ class NodeAttributeAsRectangleDisplayer( Style ):
                 NodeGlobalAttributeParameterInfo(inputData,
                                                  solutionData,
                                                  acceptable)
-#         # only perform painting if the selected attributes are available
-#         if not self.parameterValue['attribute'] in inputData.nodeAttributes:
-#             return
+        # reset filter attribute and value if necessary
+        if not 'filter attribute' in self.parameterInfo:
+            acceptable = \
+                lambda x: True
+            self.parameterInfo['filter attribute'] = \
+                NodeGlobalAttributeParameterInfo(inputData,
+                                                 solutionData,
+                                                 acceptable)
+        if not 'filter value' in self.parameterInfo:
+            values = globalNodeAttributeValues(\
+                self.parameterValue['filter attribute'],
+                inputData,
+                solutionData)
+            self.fValues = [ x if isinstance(x, str) else str(x)
+                             for x in values ]
+            uniqueValues = [ x for x in set ( self.fValues ) ]
+            uniqueValues.sort()
+            self.parameterInfo['filter value'] = \
+                EnumerationParameterInfo(uniqueValues)
+            # case where it hasn't been set yet
+            if not 'filter value' in self.parameterValue or \
+                    not self.parameterValue['filter value'] in uniqueValues:
+                self.parameterValue['filter value'] = uniqueValues[0]
         # first compute min and max demand if it's the first time we're here
         if self.minValue is None:
             self.values = globalNodeAttributeValues(\
@@ -195,8 +229,14 @@ class NodeAttributeAsRectangleDisplayer( Style ):
                                      self.parameterValue['max. height'])
         # second only continue if an attribute is specified
         allX, allY, allW, allH = [], [], [], []
-        for node, value in zip(inputData.nodes, self.values):
-            if (nodePredicate and not nodePredicate(node)) or node['is depot']:
+        for node, fValue, value in zip(inputData.nodes,
+                                       self.fValues, self.values):
+            if nodePredicate and not nodePredicate(node):
+                continue
+            # only display nodes matching the filter
+            elif self.parameterValue['filter active'] and \
+                    'filter value' in self.parameterValue and \
+                    fValue != self.parameterValue['filter value']:
                 continue
             else:
                 allX.append(convertX(node['x']) +
