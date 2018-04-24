@@ -435,9 +435,9 @@ class FlexibleNodeDisplayer( Style ):
                 self.parameterValue['filter attribute'],
                 inputData,
                 solutionData)
-            self.fValues = [ x if isinstance(x, str) else str(x)
-                             for x in values ]
-            uniqueValues = [ x for x in set ( self.fValues ) ]
+            fValues = [ x if isinstance(x, str) else str(x)
+                        for x in values ]
+            uniqueValues = [ x for x in set ( fValues ) ]
             uniqueValues.sort()
             self.parameterInfo['filter value'] = \
                 EnumerationParameterInfo(uniqueValues)
@@ -452,12 +452,12 @@ class FlexibleNodeDisplayer( Style ):
                                                  lambda x: True)
         # compute min and max demand if required
         if self.computeRadius is None:
-            self.rValues = globalNodeAttributeValues(\
+            rValues = globalNodeAttributeValues(\
                 self.parameterValue['radius attribute'],
                 inputData,
                 solutionData)
             self.computeRadius =\
-                util.intervalMapping(min(self.rValues), max(self.rValues),
+                util.intervalMapping(min(rValues), max(rValues),
                                      self.parameterValue['min. radius'],
                                      self.parameterValue['max. radius'])
         # enumerate values for colouring the nodes
@@ -489,9 +489,20 @@ class FlexibleNodeDisplayer( Style ):
         # otherwise we must use a different style for each node
         else:
             style = []
+        # re-calculated here because it changes from one solution to another
+        values = globalNodeAttributeValues(\
+                self.parameterValue['filter attribute'],
+                inputData,
+                solutionData)
+        fValues = [ x if isinstance(x, str) else str(x)
+                    for x in values ]
+        rValues = globalNodeAttributeValues(\
+                self.parameterValue['radius attribute'],
+                inputData,
+                solutionData)
         for node, filterValue, rValue in zip(inputData.nodes,
-                                             self.fValues,
-                                             self.rValues):
+                                             fValues,
+                                             rValues):
             if nodePredicate and not nodePredicate(node):
                 continue
             # only display nodes matching the filter
