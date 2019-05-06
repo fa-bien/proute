@@ -26,6 +26,8 @@ pluginDirectories = [ builtinPluginDir, userPluginDir, userSheetDir ]
 # add all plugin directories to the loading path
 sys.path += pluginDirectories
 
+print 'sys.path =', sys.path
+
 # initialize config dir if not existing
 def initializeConfig():
     if os.path.exists(userConfigDir) and not os.path.isdir(userConfigDir):

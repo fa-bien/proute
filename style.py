@@ -404,11 +404,14 @@ class NodeGlobalAttributeParameterInfo(EnumerationParameterInfo):
 # utility function to retrieve attribute values:
 # if there is a heading '+' remove it and look up the attribute in solutionData,
 # else look up the attribute in inputData
-def globalNodeAttributeValues(attribute, inputData, solutionData):
+def globalNodeAttributeValues(attribute, inputData, solutionData,
+                              acceptable=lambda x: True):
     if attribute[0] == '+':
-        return [ node[attribute[1:]] for node in solutionData.nodes ]
+        return [ node[attribute[1:]] for node in solutionData.nodes
+                 if acceptable(node) ]
     else:
-        return [ node[attribute] for node in inputData.nodes ]
+        return [ node[attribute] for node in inputData.nodes
+                 if acceptable(node) ]
 
 # utility function to retrieve attribute value:
 # same as above but for just one node
