@@ -22,7 +22,7 @@ outputFileName = 'routes.pdf'
 # main program: load an instance, a solution, and paint it in a PDF file
 if __name__ == '__main__':
     if len(sys.argv) < 3 or len(sys.argv) > 4:
-        print 'USAGE:', sys.argv[0], USAGE
+        print('USAGE:', sys.argv[0], USAGE)
         sys.exit(0)
     else:
         config.initializeConfig()
@@ -43,7 +43,7 @@ if __name__ == '__main__':
         try:
             myVrp = loader.loadInstance(inputFileName, baseType, subType)
         except Exception as e:
-            print 'Exception while trying to load the instance:', e
+            print('Exception while trying to load the instance:', e)
             sys.exit(0)
         #
         myVrp.storeAsPIF(outputFileName)

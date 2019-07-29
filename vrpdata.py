@@ -15,6 +15,7 @@ import math
 import util
 import vrpexceptions
 import findneighbour
+from functools import reduce
 
 widthNodeFactor = 3
 
@@ -67,17 +68,17 @@ class VrpInputData(object):
         self.nodeAttributes = [ 'index', 'label', 'x', 'y', 'is depot' ]
         self.globalAttributes = [ 'directed' ]
         # box bounds for plotting
-        self.xmin = sys.maxint
-        self.ymin = sys.maxint
-        self.xmax = -sys.maxint
-        self.ymax = -sys.maxint
+        self.xmin = sys.maxsize
+        self.ymin = sys.maxsize
+        self.xmax = -sys.maxsize
+        self.ymax = -sys.maxsize
         # load from file
         try:
             self.loadData(fName)
         except IOError as e:
             raise e
         except Exception as e:
-            print 'Exception while loading a file:', e
+            print('Exception while loading a file:', e)
             raise vrpexceptions.VrpInputFileFormatException(self.problemType,
                                                             fName)
         # generate missing information
@@ -155,10 +156,10 @@ class VrpInputData(object):
             f.write( reduce( lambda x, y: str(x) + sep + str(y),
                              attributes ) + '\n')
         # instance attributes
-        for a, v in self.attributes.iteritems():
+        for a, v in self.attributes.items():
             f.write(sep + str(a) + sep + str(v) + '\n')
         f.close()
-        print 'Stored to', fName
+        print('Stored to', fName)
             
 # this class stores solution data for any kind of routing problem
 class VrpSolutionData(object):
@@ -238,7 +239,7 @@ class VrpSolutionData(object):
         except IOError as e:
             raise e
         except Exception as e:
-            print e
+            print(e)
             raise vrpexceptions.SolutionFileFormatException(self.problemType,
                                                             fName)
         # in case the route information provided by loadData() is not complete:
@@ -375,7 +376,7 @@ class VrpSolutionData(object):
             currentTime = 0
             for i, index in enumerate( sequence[:-1] ):
                 if index != route['node information'][i]['index']:
-                    print 'Inconsistent node information data in route'
+                    print('Inconsistent node information data in route')
                     return
                 self.nodes[index]['arrival time'] = currentTime
                 route['node information'][i]['arrival time'] = currentTime

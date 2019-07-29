@@ -9,10 +9,10 @@ import wx
 import wx.grid
 
 import vrpdata
-import wxcanvas
-from vrppanel import VrpPanel
+from . import wxcanvas
+from .vrppanel import VrpPanel
 import style
-import events
+from . import events
 
 nodeAttributeColWidth = 120
 nodeValueColWidth = 90
@@ -81,7 +81,7 @@ class SolutionListBook(wx.Listbook):
     def addSolution(self, vrp, solution, sheet, nodeInfoList):
         # thumbnail creation
         memdc = wx.MemoryDC()
-        bitmap = wx.EmptyBitmap(self.thumbnailWidth, self.thumbnailHeight)
+        bitmap = wx.Bitmap(self.thumbnailWidth, self.thumbnailHeight)
         memdc.SelectObject(bitmap)
         dc = wx.GCDC(memdc)
         canvas = wxcanvas.WxThumbnailCanvas(dc,
@@ -158,7 +158,7 @@ class NodeInputInformationList(wx.ListCtrl):
         self.InsertColumn(1, 'Value', width=nodeValueColWidth)
         # fill attribute names already
         for a in self.sortedAttributes:
-            index = self.InsertStringItem(sys.maxint, a)
+            index = self.InsertItem(sys.maxsize, a)
             self.SetItemBackgroundColour(index, 'white' if index % 2 == 0 else \
                                              wx.Colour(245,245,245))
         # internal data storage (wx.ListCtrl does not provide it, wtf)
@@ -220,13 +220,13 @@ class NodeInputInformationGrid(wx.grid.Grid):
             self.SetRowAttr(i, attr)
         # additional cosmetic settings
         self.EnableGridLines(False)
- 	self.EnableDragColSize(True)
+        self.EnableDragColSize(True)
         self.DisableCellEditControl()
- 	self.DisableDragCell()
- 	self.DisableDragColMove()
- 	self.DisableDragGridSize()
- 	self.DisableDragRowSize()
- 	self.EnableEditing(False)
+        self.DisableDragCell()
+        self.DisableDragColMove()
+        self.DisableDragGridSize()
+        self.DisableDragRowSize()
+        self.EnableEditing(False)
         self.SetColLabelSize(0)
         self.SetRowLabelSize(0)
         # fill attribute names already

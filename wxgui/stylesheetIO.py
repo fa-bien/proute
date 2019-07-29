@@ -34,7 +34,7 @@ class LoadStyleSheetDialog(wx.Dialog):
             subItems = []
             for item in dir(module):
                 thisOne = module.__getattribute__(item)
-                if type(thisOne) is types.TypeType and \
+                if type(thisOne) is type and \
                         issubclass(thisOne, stylesheet.StyleSheet) and \
                         not issubclass(stylesheet.StyleSheet, thisOne):
                     name = thisOne.__name__

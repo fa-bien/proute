@@ -7,8 +7,8 @@ import sys
 
 import wx
 
-import setool
-import events
+from . import setool
+from . import events
 
 # this widget allows to edit styles
 # the object to edit must be set using the method setEditable(style)
@@ -45,7 +45,7 @@ class StyleEditor(wx.Panel):
             return
         # loop over customizable parameters, i.e. those with an entry in
         # style.parameterInfo
-        for parameter in sorted(styleToEdit.parameterInfo.iterkeys()):
+        for parameter in sorted(styleToEdit.parameterInfo.keys()):
             # add the name of the parameter
             self.gridSizer.Add(wx.StaticText(self.sw, label=parameter))
             # now add its editable value

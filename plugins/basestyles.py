@@ -289,7 +289,7 @@ class RouteColourDisplayer( Style ):
         if self.values is None:
             # we construct a unique value-colour mapping
             # we only want to accept attributes that return hashable values
-            acceptable = lambda(x): \
+            acceptable = lambda x: \
                 not (isinstance(x, dict) or isinstance(x, list))
             self.parameterInfo['attribute'] = \
                 RouteAttributeParameterInfo(solutionData, acceptable)

@@ -1,12 +1,11 @@
 #
 # File created during the fall of 2010 (northern hemisphere) by Fabien Tricoire
 # fabien.tricoire@univie.ac.at
-# Last modified: October 4th 2011 by Fabien Tricoire
 #
 import os
-import cPickle
-import urllib2
-import StringIO
+import pickle
+import urllib.request, urllib.error, urllib.parse
+import io
 from math import *
 
 import config
@@ -18,9 +17,9 @@ import config
 # the mapping is linear
 def intervalMapping(inputMin, inputMax, outputMin, outputMax):
     if inputMin == inputMax:
-        return lambda(x): (outputMax + outputMin) / 2.0
+        return lambda x: (outputMax + outputMin) / 2.0
     else:
-        return lambda(x): outputMin\
+        return lambda x: outputMin\
             + (x - float(inputMin)) / (inputMax - inputMin)\
             * (outputMax - outputMin)
 
@@ -28,14 +27,14 @@ def intervalMapping(inputMin, inputMax, outputMin, outputMax):
 def intervalMappingModulo(inputMin, inputMax,
                           outputMin, outputMax,
                           inputModulo):
-    return lambda(x): outputMin\
+    return lambda x: outputMin\
         + ( (x % inputModulo) - float(inputMin)) / (inputMax - inputMin)\
         * (outputMax - outputMin) #if x >= inputMin and x <= inputMax else None
 
 # return a predicate returning true if the route has the right value for the
 # specified attribute
 def makeRoutePredicate(attribute, value):
-    return lambda(route): route[attribute] == value
+    return lambda route: route[attribute] == value
 
 # return a predicate returning true if the node is present in a route of
 # solutionData satisfying routePredicate
@@ -45,7 +44,7 @@ def makeNodeInRoutePredicate(solutionData, routePredicate):
         if routePredicate(route):
             for i in route['node sequence']:
                 acceptableIndices.add(i)
-    return lambda(node): node['index'] in acceptableIndices
+    return lambda node: node['index'] in acceptableIndices
 
 # return the end index of the longest common substring starting at index 0
 def longestStartingSubstringIndex(strings):
@@ -91,7 +90,7 @@ def getPluginNames():
                          if fName[-3:] == '.py' ]
             names += newNames
         except OSError as e:
-            print '[Warning] unable to load plugins:', e
+            print('[Warning] unable to load plugins:', e)
     return names
 
 # compute the secant of the given angle (given in degrees)
@@ -120,36 +119,36 @@ class PersistentWebCache:
         if os.path.exists(self.fileName):
             try:
                 f = open(self.fileName, 'r')
-                loadedPrefix = cPickle.load(f)
+                loadedPrefix = pickle.load(f)
                 if self.prefix == loadedPrefix:
-                    self.dict = cPickle.load(f)
+                    self.dict = pickle.load(f)
                     if isinstance(self.dict, dict):
-                        print 'Loaded web cache from', self.fileName
+                        print('Loaded web cache from', self.fileName)
                     else:
                         self.dict = {}
                 f.close()
             except Exception as e:
-                print e
+                print(e)
                 f.close()
                         
     def get(self, key, reload=False):
         if reload or not key in self.dict:
-            print 'downloading', key
+            print('downloading', key)
             url = self.prefix + key
-            data = urllib2.urlopen(url).read()
+            data = urllib.request.urlopen(url).read()
             self.dict[key] = data
             self.modified = True
         else:
             data = self.dict[key]
-        return StringIO.StringIO(data)
+        return io.StringIO(data)
 
     def __del__(self):
         if self.modified:
             f = open(self.fileName, 'w')
-            cPickle.dump(self.prefix, f)
-            cPickle.dump(self.dict, f)
+            pickle.dump(self.prefix, f)
+            pickle.dump(self.dict, f)
             f.close()
-            print 'Stored web cache to', self.fileName
+            print('Stored web cache to', self.fileName)
 
 # escape characters that might otherwise be interpreted in an inappropriate way
 def escapeFileName(fileName):

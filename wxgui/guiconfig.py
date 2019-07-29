@@ -24,17 +24,17 @@ preferences = {}
 def initializeConfig():
     # this should not happen...
     if os.path.exists(guiConfigDir) and not os.path.isdir(guiConfigDir):
-        print guiConfigDir, 'exists but is not a directory,',
-        print 'WxGUI config won\'t be saved'
+        print(guiConfigDir, 'exists but is not a directory,', end=' ')
+        print('WxGUI config won\'t be saved')
     # create the guiconfig directory if it doesn't exist
     else:
         if not os.path.isdir(guiConfigDir):
-            print 'Creating user config directory', guiConfigDir
+            print('Creating user config directory', guiConfigDir)
             os.mkdir(guiConfigDir)
     # if there is a preferences file, load it
     if os.path.exists(preferencesFile) and not os.path.isdir(preferencesFile):
         global preferences
-        preferences = eval(file(preferencesFile).read())
+        preferences = eval(open(preferencesFile).read())
     # we can have an erroneous preferences file, or we can have no prefs file
     # in both cases we reset
     if not isinstance(preferences, dict) or len(preferences) == 0:
@@ -50,14 +50,14 @@ def savePreferences():
         f.write(str(preferences) + '\n')
         f.close()
     except Exception as e:
-        print 'Cannot save preferences:', e
+        print('Cannot save preferences:', e)
     
 def loadLayout(fName):
     try:
-        layout = eval(file(fName).read())
+        layout = eval(open(fName).read())
         return layout
     except Exception as e:
-        print 'Cannot load layout:', e
+        print('Cannot load layout:', e)
         return None
 
 def loadFavouriteLayout():
@@ -75,7 +75,7 @@ def saveLayout(layout, fName):
         f.write(str(layout) + '\n')
         f.close()
     except Exception as e:
-        print 'Cannot save layout:', e
+        print('Cannot save layout:', e)
 
 def saveAsFavouriteLayout(layout):
     saveLayout(layout, favouriteLayoutFileName)

@@ -24,7 +24,7 @@ USAGE = 'type[:subtype] instance_file [:solution subtype] [solution_files]'
 def main():
     config.initializeConfig()
     if len(sys.argv) < 3:
-        print 'USAGE:', sys.argv[0], USAGE
+        print('USAGE:', sys.argv[0], USAGE)
         # sys.exit(0)
         myVrp, solutions, myStyleSheet = None, None, None
     else:

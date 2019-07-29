@@ -22,7 +22,7 @@ class CVRPInputData(vrpdata.VrpInputData):
         self.attributes = {}
         # load a Christofides, Mingozzi and Toth instance
         cpt = 0
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             line = line.split()
             if len(line) > 3:
                 self.attributes['directed'] = False
@@ -55,7 +55,7 @@ class VRPLIBInputData(vrpdata.VrpInputData):
         self.attributes['directed'] = False
         # load a VRPLIB instance
         section = 'header'
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             tokens = line.split()
             if section == 'header':
                 if tokens[0] == 'NAME':
@@ -114,13 +114,13 @@ class CVRPSolutionData(vrpdata.VrpSolutionData):
         # all routes in the solution (lists of indices)
         self.routes = []
         # process each line
-        for line in file.readlines(file(fName)):
-            print line
+        for line in open(fName).readlines():
+            print(line)
             line = line.split()
             if line[0] != 'route:':
                 continue
             else:
-                print line
+                print(line)
                 thisRoute = {}
                 thisRoute['index'] = len(self.routes)
                 thisRoute['node sequence'] = eval('[' + line[1] + ']')
@@ -137,7 +137,7 @@ class VRPLIBSolutionData(vrpdata.VrpSolutionData):
         self.routes = []
         # process each line
         section = 'header'
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             tokens = line.split()
             if section == 'header':
                 if tokens[0] == 'NAME':

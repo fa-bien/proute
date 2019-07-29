@@ -30,7 +30,7 @@ class PIFInputData(vrpdata.VrpInputData):
         stage = 'header'
         self.nodes = []
         self.attributes = {}
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             line = line.rstrip()
             # ignore comments and empty lines
             if line[0] == '#' or len(line) == 0:
@@ -84,7 +84,7 @@ class PSFSolutionData(vrpdata.VrpSolutionData):
         self.nodes = [ { 'index': x['index'] } for x in vrpData.nodes ]
         stage = 'header'
         # process each line...
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             line = line.rstrip()
             # ignore comments and empty lines
             if line[0] == '#' or len(line) == 0:

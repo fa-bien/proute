@@ -17,7 +17,7 @@ import util
 # load available plugins
 pluginNames = util.getPluginNames()
 for name in pluginNames:
-    exec 'import ' + name
+    exec('import ' + name)
     
 # an instance of data loader handles various procedures
 class DataLoader:
@@ -37,28 +37,28 @@ class DataLoader:
                 if item[:1] == '_': continue
                 thisOne = module.__getattribute__(item)
                 # interesting case: classes
-                if type(thisOne) is types.TypeType:
+                if type(thisOne) is type:
                     # case 1: input data class
                     if issubclass(thisOne, vrpdata.VrpInputData):
-                        key = (unicode(thisOne.problemType),
-                               unicode(thisOne.instanceType))
+                        key = (str(thisOne.problemType),
+                               str(thisOne.instanceType))
                         self.vrpInputClasses[key] = thisOne
-                        if not (key[0], u'default') in self.vrpInputClasses:
+                        if not (key[0], 'default') in self.vrpInputClasses:
                             # add this class as default in case there isn't one
-                            self.vrpInputClasses[(key[0], u'default')] = thisOne
+                            self.vrpInputClasses[(key[0], 'default')] = thisOne
                     # case 2: solution data class
                     elif issubclass(thisOne, vrpdata.VrpSolutionData):
-                        key = (unicode(thisOne.problemType),
-                               unicode(thisOne.solutionType))
+                        key = (str(thisOne.problemType),
+                               str(thisOne.solutionType))
                         self.vrpSolutionClasses[key] = thisOne
-                        if not (key[0], u'default') in self.vrpSolutionClasses:
+                        if not (key[0], 'default') in self.vrpSolutionClasses:
                             # add this class as default in case there isn't one
-                            self.vrpSolutionClasses[(key[0], u'default')] = \
+                            self.vrpSolutionClasses[(key[0], 'default')] = \
                                 thisOne
                     # case 3: style sheet
                     elif issubclass(thisOne, stylesheet.StyleSheet):
                         for key in thisOne.defaultFor:
-                            self.styleSheetClasses[unicode(key)] = thisOne
+                            self.styleSheetClasses[str(key)] = thisOne
                     else:
                         # non-appropriate class for this context (e.g. Style)
                         pass
@@ -71,7 +71,7 @@ class DataLoader:
 
     # load the instance in file fName with specified type and subtype
     def loadInstance(self, fName, type, subtype):
-        vrp = self.vrpInputClasses[(unicode(type), unicode(subtype))](fName)
+        vrp = self.vrpInputClasses[(str(type), str(subtype))](fName)
         # finally we can return our freshly loaded instance
         return vrp
         
@@ -80,15 +80,15 @@ class DataLoader:
     # if only a solution is returned then it is encapsulated in a list
     def loadSolution(self, fName, vrp, type, solutionSubtype):
         solution = \
-            self.vrpSolutionClasses[(unicode(type),
-                                     unicode(solutionSubtype))](fName, vrp)
+            self.vrpSolutionClasses[(str(type),
+                                     str(solutionSubtype))](fName, vrp)
         return solution
 #         return solutions if solutions.__class__ == list else [ solutions ]
 
     # load the default style sheet for the given problem type
     def loadStyleSheet(self, type):
-        return self.styleSheetClasses[unicode(type)]() \
-            if unicode(type) in self.styleSheetClasses \
+        return self.styleSheetClasses[str(type)]() \
+            if str(type) in self.styleSheetClasses \
             else stylesheet.StyleSheet()
 
     # return available VRP types
@@ -105,5 +105,5 @@ class DataLoader:
     def getAvailableSolutionTypes(self, type):
         items = list(set([ x[1]
                            for x in self.vrpSolutionClasses
-                           if x[0] == type and x[1] != u'default' ]))
-        return [u'default'] + items
+                           if x[0] == type and x[1] != 'default' ]))
+        return ['default'] + items

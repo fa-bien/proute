@@ -62,7 +62,8 @@ EVT_REGISTER_FRAME = wx.PyEventBinder(registerFrameEventType, 1)
 class RegisterFrameEvent(wx.PyCommandEvent):
     def __init__(self, eventType, object):
         wx.PyCommandEvent.__init__(self, eventType, object.GetId())
-        self.EventObject = object
+        self.SetEventObject(object)
+        
 def postRegisterFrameEvent(object):
     event = RegisterFrameEvent(registerFrameEventType, object)
     object.GetEventHandler().ProcessEvent(event)
@@ -73,7 +74,7 @@ EVT_UNREGISTER_FRAME = wx.PyEventBinder(unregisterFrameEventType, 1)
 class UnregisterFrameEvent(wx.PyCommandEvent):
     def __init__(self, eventType, object):
         wx.PyCommandEvent.__init__(self, eventType, object.GetId())
-        self.EventObject = object
+        self.SetEventObject(object)
 def postUnregisterFrameEvent(object):
     event = UnregisterFrameEvent(unregisterFrameEventType, object)
     object.GetEventHandler().ProcessEvent(event)
@@ -102,7 +103,7 @@ EVT_PREFERENCES = wx.PyEventBinder(preferencesEventType, 1)
 class PreferencesEvent(wx.PyCommandEvent):
     def __init__(self, eventType, object):
         wx.PyCommandEvent.__init__(self, eventType, object.GetId())
-        self.EventObject = object
+        self.SetEventObject(object)
 def postPreferencesEvent(object):
     event = PreferencesEvent(preferencesEventType, object)
     object.GetEventHandler().ProcessEvent(event)
@@ -113,7 +114,7 @@ EVT_DELETE_SOLUTION = wx.PyEventBinder(deleteSolutionEventType, 1)
 class DeleteSolutionEvent(wx.PyCommandEvent):
     def __init__(self, eventType, object):
         wx.PyCommandEvent.__init__(self, eventType, object.GetId())
-        self.EventObject = object
+        self.SetEventObject(object)
 def postDeleteSolutionEvent(object):
     event = DeleteSolutionEvent(deleteSolutionEventType, object)
     object.GetEventHandler().ProcessEvent(event)

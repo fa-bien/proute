@@ -27,11 +27,11 @@ class PVRPInputData(vrpdata.VrpInputData):
         self.attributes = {}
         # load a Cordeau, Gendreau and Laporte instance
         cpt = 0
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             value = [ string.atof(x) for x in line.split() ]
             if len(value) == 4 and cpt == 0:
                 if value[0] != 1:
-                    print 'Wrong file type for PVRP instance'
+                    print('Wrong file type for PVRP instance')
                     sys.exit(1)
                 else:
                     self.attributes['number of vehicles'] = int(value[1])
@@ -44,7 +44,7 @@ class PVRPInputData(vrpdata.VrpInputData):
                 self.attributes['capacity'].append(int(value[1]))
                 if len(self.attributes['capacity']) >\
                         self.attributes['number of days']:
-                    print 'Too many day-information lines in PVRP instance'
+                    print('Too many day-information lines in PVRP instance')
                     sys.exit(1)
             elif len(value) >= 7:
                 thisNode = {}
@@ -85,7 +85,7 @@ class PVRPSolutionData(vrpdata.VrpSolutionData):
     def loadPVRP(self, fName):
         # process each line
         cpt = 0
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             line = line.split()
             # case where we read a whole log file
             if line[0] == 'Initialized':
@@ -120,7 +120,7 @@ class PVRPLogSolutionData(PVRPSolutionData):
     def loadPVRPFromLog(self, fName):
         # process each line
         cpt = 0
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             line = line.split()
             # case where we read a new solution
             if len(line) == 0:

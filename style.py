@@ -60,7 +60,7 @@ class HSVColour(Colour):
         elif Hprime < 6:
             R, G, B = C, 0, X
         else:
-            print 'incorrect H, S, V values:', H, S, V
+            print('incorrect H, S, V values:', H, S, V)
         m = V - C
         self.red = int (255 * (R + m))
         self.green = int (255 * (G + m))
@@ -141,7 +141,7 @@ def generateCleverSpreadColours(k):
     H, S, V = .005555555, .5, .95
     silverRatio = 2.0 / (1 + math.sqrt(5))
     return ColourMap( [ HSVColour((H + silverRatio * x) % 1, S, V)
-                        for x in xrange(k) ] )
+                        for x in range(k) ] )
 
 # generate k random colours
 def generateRandomColours(k):
@@ -171,23 +171,21 @@ class DrawingStyle:
                  fillColour=None,
                  lineThickness=None,
                  lineStyle='solid'):
-        self.lineColour = lineColour
+        self._lineColour = lineColour
         self.lineThickness = lineThickness
         self.fillColour = fillColour
         self.lineStyle=lineStyle
         
-    # return transparent colour is thickness is 0, so that no border is drawn
-    def getLineColour(self):
-        if self.lineThickness <= -1:
-            return Colour(0, 0, 0, 30)
-        elif self.lineThickness <= 0:
-            return Colour(0, 0, 0, 0)
-        else:
-            return self.lineColour
-
     # property that returns the right line colour depending on thickness
-    lineColour = property(getLineColour)
 
+    @property
+    def lineColour(self):
+        if self.lineThickness <= 0:
+            return Colour(0, 0, 0, 255)
+        else:
+            return self._lineColour
+        
+    
 # abstract style class
 class Style( object ):
     """This is the abstract class for all styles used in stylesheets;
@@ -267,8 +265,8 @@ class Style( object ):
                        nodePredicate, routePredicate, arcPredicate,
                        boundingBox)
         except Exception as e:
-            print 'Cannot paint using style ' + self.__class__.__name__ + \
-                ': ' + str(e)
+            print('Cannot paint using style ' + self.__class__.__name__ + \
+                ': ' + str(e))
             
     def preProcessAttributes(self, vrpData, solutionData):
         for attr in self.requiredGlobalAttributes:
@@ -293,11 +291,11 @@ class Style( object ):
                                                 attr)
             
     def canBePainted(self):
-        for param, value in self.parameterValue.items():
+        for param, value in list(self.parameterValue.items()):
             if not param in self.parameterInfo:
                 return False
             if not self.parameterInfo[param].acceptableValue(value):
-                print self, param, value
+                print(self, param, value)
                 return False
         return True
         
@@ -370,7 +368,7 @@ class EnumerationParameterInfo(ParameterInfo):
 # node attribute parameter information
 # this version only considers the attributes in the input data
 class NodeInputAttributeParameterInfo(EnumerationParameterInfo):
-    def __init__(self, vrpData, acceptable=lambda(x): True):
+    def __init__(self, vrpData, acceptable=lambda x: True):
         if vrpData.nodes:
             node = vrpData.nodes[0]
             self.possibleValues = [ x for x in vrpData.nodeAttributes
@@ -383,7 +381,7 @@ class NodeInputAttributeParameterInfo(EnumerationParameterInfo):
 # node attribute parameter information
 # this version considers both input and solution data attributes
 class NodeGlobalAttributeParameterInfo(EnumerationParameterInfo):
-    def __init__(self, vrpData, solutionData, acceptable=lambda(x): True):
+    def __init__(self, vrpData, solutionData, acceptable=lambda x: True):
         if vrpData.nodes:
             node = vrpData.nodes[0]
             possibleInputValues = [ x for x in vrpData.nodeAttributes
@@ -425,7 +423,7 @@ def globalNodeAttributeValue(attribute, node, solutionData):
     
 # route attribute parameter information
 class RouteAttributeParameterInfo(EnumerationParameterInfo):
-    def __init__(self, solutionData, acceptable=lambda(x): True):
+    def __init__(self, solutionData, acceptable=lambda x: True):
         if solutionData.routes:
             route = solutionData.routes[0]
             self.possibleValues = [ x for x in solutionData.routeAttributes
@@ -437,7 +435,7 @@ class RouteAttributeParameterInfo(EnumerationParameterInfo):
 
 # arc attribute parameter information
 class ArcAttributeParameterInfo(EnumerationParameterInfo):
-    def __init__(self, solutionData, acceptable=lambda(x): True):
+    def __init__(self, solutionData, acceptable=lambda x: True):
         if solutionData.routes:
             arc = solutionData.routes[0]['arcs'][0]
             self.possibleValues = [ x for x in solutionData.routeArcAttributes

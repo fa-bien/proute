@@ -15,6 +15,7 @@ from reportlab.pdfgen import canvas as rlcanvas
 from canvas import *
 import colours
 import style
+from functools import reduce
 
 # convert an AbstractColour to a reportlab Color
 def convertColour(abstractColour):
@@ -38,7 +39,7 @@ def parallelThroughPoint(x1, y1, x2, y2, x3, y3):
     a = (y2-y3) / ( x2-x3 if x2 != x3 else .00001)
     b = y1 - (a * x1)
 #     print 'line going through', ((x1,y1)), 'parallel to', ((x2,y2)), '--', ((x3,y3)), ': y =', a, '* x +', b
-    return lambda(x): a * x + b
+    return lambda x: a * x + b
     
 # reportlab canvas!
 class ReportlabCanvas(Canvas):
@@ -327,8 +328,8 @@ class ReportlabCanvas(Canvas):
         # img = reportlab.pdfgen.canvas.ImageReader(bitmap)
         # ugly workaround since the previous commented method doesn't work with
         # all versions of reportlab
-        import StringIO
-        dummy = StringIO.StringIO()
+        import io
+        dummy = io.StringIO()
         bitmap.save(dummy, format='png')
         dummy.seek(0)
         import reportlab

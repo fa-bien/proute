@@ -20,7 +20,7 @@ class TOPInputData(vrpdata.VrpInputData):
         self.globalAttributes += [ '# vehicles', 'Tmax', '# nodes' ]
         self.nodes = []
         self.attributes = {}
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             tokens = line.split()
             if len(tokens) == 2:
                 if tokens[0] == 'n':
@@ -30,7 +30,7 @@ class TOPInputData(vrpdata.VrpInputData):
                 elif tokens[0] == 'tmax':
                     self.attributes['Tmax'] = string.atof(tokens[1])
                 else:
-                    print 'Incorrect file format for', fName
+                    print('Incorrect file format for', fName)
                     sys.exit(0)
             elif len(tokens) == 3:
                 thisNode = {'index': len(self.nodes)}
@@ -42,7 +42,7 @@ class TOPInputData(vrpdata.VrpInputData):
                     len(self.nodes) == self.attributes['# nodes'] - 1
                 self.nodes.append(thisNode)
             else:
-                print 'Incorrect file format for', fName
+                print('Incorrect file format for', fName)
                 sys.exit(0)
                 
 class TOPSolutionData(vrpdata.VrpSolutionData):
@@ -54,7 +54,7 @@ class TOPSolutionData(vrpdata.VrpSolutionData):
         self.routeAttributes += [ 'node sequence' ]
         # all routes in the solution (lists of indices)
         self.routes = []
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             tokens = line.split()
             if tokens[0] == 'Actual' and tokens[1] == 'tours':
                 self.routes = []
@@ -78,11 +78,11 @@ class TOPStudentSolutionData(vrpdata.VrpSolutionData):
         self.routeAttributes += [ 'node sequence' ]
         # all routes in the solution (lists of indices)
         self.routes = []
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             tokens = line.split()
             if tokens[0] == 'route' and tokens[1][-1] == ':':
                 nodes = eval('[' + tokens[2] + ']')
-                print nodes
+                print(nodes)
                 thisRoute = {'index': string.atoi(tokens[1][:-1]),
                              'node sequence': nodes}
                 self.routes.append(thisRoute)

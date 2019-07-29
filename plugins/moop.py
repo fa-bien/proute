@@ -22,7 +22,7 @@ class MOOPInputData(vrpdata.VrpInputData):
         self.nodes = []
         self.attributes = {}
         self.attributes['directed'] = False
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             # remove comments
             tokens = line.split('//')[0].split(',')
             # header line
@@ -64,7 +64,7 @@ class MOOPSolutionData(vrpdata.VrpSolutionData):
         self.routes = []
         # process each line
         cpt = 0
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             line = line.split()
             if line[0] != 'Tour:':
                 continue

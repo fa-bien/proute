@@ -34,7 +34,7 @@ class AddStyleDialog(wx.Dialog):
             subItems = []
             for item in dir(module):
                 thisOne = module.__getattribute__(item)
-                if type(thisOne) is types.TypeType and \
+                if type(thisOne) is type and \
                         issubclass(thisOne, style.Style) and \
                         not issubclass(style.Style, thisOne):
                     subItems.append(thisOne.__name__ +': '+ thisOne.description)

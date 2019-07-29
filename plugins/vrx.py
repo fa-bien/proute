@@ -49,7 +49,7 @@ class VRXInputData(vrpdata.VrpInputData):
         self.requestIDToIndex = {}
         self.depotsForRoute = {}
         # read a section at a time
-        for rawLine in file(fName):
+        for rawLine in open(fName):
             # remove the comments
             line = rawLine[:rawLine.find('#')].rstrip()
             # empty lines
@@ -148,7 +148,7 @@ class VRXSolutionData(vrpdata.VrpSolutionData):
         thisRoute = None
         stage = None
         # process each line
-        for rawLine in file(fName):
+        for rawLine in open(fName):
             # remove the comments
             line = rawLine[:rawLine.find('#')].rstrip()
             tokens = line.split()
@@ -252,7 +252,7 @@ class VRX_CSVSolutionData(vrpdata.VrpSolutionData):
         thisRoute = None
         stage = None
         # process each line
-        for rawLine in file(fName):
+        for rawLine in open(fName):
             tokens = rawLine.split(',')
             if len(tokens) < 2:
                 continue
@@ -317,7 +317,7 @@ class VRXRouteSolutionData(vrpdata.VrpSolutionData):
         # all routes in the solution (lists of indices)
         self.routes = []
         # process each line
-        for rawLine in file(fName):
+        for rawLine in open(fName):
             # remove the comments
             line = rawLine[:rawLine.find('#')].rstrip()
             if line[:9] == 'Route-Veh':

@@ -7,7 +7,7 @@ import sys
 
 import wx
 
-import guiconfig
+from . import guiconfig
 
 class PreferencesDialog(wx.Dialog):
     def __init__(self, parent):

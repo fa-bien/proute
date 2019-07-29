@@ -304,21 +304,21 @@ class StyleSheet(object):
                                                          inputData,
                                                          margin)
             # predicate if required for grid
-            tmpNodePredicate = lambda(x): True
+            tmpNodePredicate = lambda x: True
             if not self.grid:
                 newRoutePredicate = routePredicate
             else:
                 tmpPredicate = util.makeRoutePredicate(self.gridRouteAttribute,
                                                        cell)
                 newRoutePredicate = \
-                    lambda(route): tmpPredicate(route) and \
+                    lambda route: tmpPredicate(route) and \
                     (routePredicate is None or routePredicate(route))
                 # in case we also need to filter nodes
                 if self.filterNodesInGrid:
                     tmpNodePredicate = \
                         util.makeNodeInRoutePredicate(solutionData,
                                                       newRoutePredicate)
-            newNodePredicate = lambda(node): tmpNodePredicate(node) and\
+            newNodePredicate = lambda node: tmpNodePredicate(node) and\
                 (nodePredicate is None or nodePredicate(node))
             # display all styles sequentially
             for style in self.styles:
@@ -340,7 +340,7 @@ class StyleSheet(object):
         name = re.sub(r'\W+', '', name)
         if name[0].isdigit():
             name = 'a' + name
-        print 'exporting with name=', name
+        print('exporting with name=', name)
         # do not export to a module with the same name as a builtin module
         if os.path.exists(\
             os.path.join(config.builtinPluginDir, name + '.py')) or \
@@ -352,7 +352,7 @@ class StyleSheet(object):
             outputFileName = os.path.join(config.userSheetDir, name + '.py')
         # (first we check that the directory exists)
         if not os.path.isdir(config.userSheetDir):
-            print 'Creating user sheets directory', config.userSheetDir
+            print('Creating user sheets directory', config.userSheetDir)
             os.mkdir(config.userSheetDir)
         f = open(outputFileName, 'w')
         indent1 = '    '
@@ -401,7 +401,7 @@ class StyleSheet(object):
             f.write(indent2 + 'self.styles.append(' + str(s) + ')' + '\n')
         # close the file..
         f.close()
-        print 'Stored stylesheet to ' + outputFileName
+        print('Stored stylesheet to ' + outputFileName)
 
     # print the stylesheet
     def __repr__(self):

@@ -9,9 +9,9 @@ import sys
 import wx
 
 import stylesheet
-import events
+from . import events
 
-import guiconfig
+from . import guiconfig
 
 class GridManager(wx.Frame):
     def __init__(self, parent, styleSheet, solutionData):

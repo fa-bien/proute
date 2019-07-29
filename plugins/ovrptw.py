@@ -21,7 +21,7 @@ class OVRPTWInputData(vrpdata.VrpInputData):
         self.attributes = {}
         # load a Tarantilis & Repoussis instance
         cpt = 0
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             tokens = line.split()
             if len(tokens) == 2 and tokens[0] != 'NUMBER':
                 self.attributes['capacity'] = string.atoi(tokens[1])
@@ -52,7 +52,7 @@ class OVRPTWKritzingerSolutionData(vrpdata.VrpSolutionData):
         self.routes = []
         # process each line
         cpt = 0
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             tokens = line.split()
             if len(tokens) == 0: continue
             if tokens[0] != 'route':

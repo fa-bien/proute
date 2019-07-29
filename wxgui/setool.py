@@ -8,8 +8,8 @@ import os
 import wx
 import wx.lib.colourselect as csel
 
-from wxcanvas import convertColour
-import events
+from .wxcanvas import convertColour
+from . import events
 import style
 
 try:

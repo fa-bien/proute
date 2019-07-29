@@ -11,6 +11,7 @@ from style import *
 import colours
 import shapes
 from colourmapping import *
+from functools import reduce
 
 # This module contains flexible, general-purpose styles: they can be reused for
 # different purposes and are not restrictive when it comes to required
@@ -582,8 +583,8 @@ class FlexibleArcDisplayer( Style ):
         'thickness by attribute': BoolParameterInfo(),
         'draw depot arcs': BoolParameterInfo(),
         'filter active': BoolParameterInfo(),
-        'gradient min. value': FloatParameterInfo(-sys.maxint, sys.maxint),
-        'gradient max. value': FloatParameterInfo(-sys.maxint, sys.maxint),
+        'gradient min. value': FloatParameterInfo(-sys.maxsize, sys.maxsize),
+        'gradient max. value': FloatParameterInfo(-sys.maxsize, sys.maxsize),
         }
     defaultValue = {
         'show direction': False,

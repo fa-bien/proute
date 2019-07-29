@@ -26,7 +26,7 @@ class MCDARPInputData(vrpdata.VrpInputData):
         self.nodes = []
         self.attributes = {}
         # load a MCDARP instance
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             # skip comments
             if line[0] == '#':
                 continue
@@ -230,9 +230,9 @@ class MCDARPSolutionData(vrpdata.VrpSolutionData):
             elif line[:21] == '# Unplanned requests:':
                 return
             else:
-                print line[:21]
-                print 'incorrect file format'
-                print line
+                print(line[:21])
+                print('incorrect file format')
+                print(line)
                 sys.exit(0)
 
 # style for displaying MCDARP

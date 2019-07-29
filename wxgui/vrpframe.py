@@ -25,15 +25,15 @@ except Exception as e:
     pass
 
 import stylesheet
-import events
+from . import events
 from vrpexceptions import MissingAttributeException
 import vrpdata
 import util
 
-import vrpgui
-from sscontrols import StyleSheetControls, ssControlWidth, ssControlHeight
-from solutionbrowser import SolutionBrowser, nodeInfoWidth
-import guiconfig
+from . import vrpgui
+from .sscontrols import StyleSheetControls, ssControlWidth, ssControlHeight
+from .solutionbrowser import SolutionBrowser, nodeInfoWidth
+from . import guiconfig
 
 class VrpFrame(wx.Frame):
     def __init__(self, parent, vrpData, solutions, styleSheet, layout=None,
@@ -116,7 +116,7 @@ class VrpFrame(wx.Frame):
                 self.SetSize(layout['unmaximised size'])
                 self.Maximize()
         except Exception as e:
-            print e
+            print(e)
 
     # populate menu bar
     def populateMenuBar(self):
@@ -234,7 +234,7 @@ class VrpFrame(wx.Frame):
 
     # save a styleSheet
     def saveStyleSheet(self, event):
-        import stylesheetIO
+        from . import stylesheetIO
         dialog = stylesheetIO.SaveStyleSheetDialog(self)
         returnValue = dialog.ShowModal()
         # in case 'Ok' was clicked, we load the selected stylesheet
@@ -250,7 +250,7 @@ class VrpFrame(wx.Frame):
                 
     # load a stylesheet
     def loadStyleSheet(self, event):
-        import stylesheetIO
+        from . import stylesheetIO
         chooser = stylesheetIO.LoadStyleSheetDialog(self)
         returnValue = chooser.ShowModal()
         # in case 'Ok' was clicked, we load the selected stylesheet
@@ -368,7 +368,7 @@ class VrpFrame(wx.Frame):
         try:
             self.gridManager.Destroy()
         except AttributeError:
-            import gridmanagement
+            from . import gridmanagement
             self.gridManager = \
                 gridmanagement.GridManager(self, self.styleSheet,
                                            self.browserPanel.solutionBook.\

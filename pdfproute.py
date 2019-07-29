@@ -30,7 +30,7 @@ outputFileName = 'routes.pdf'
 if __name__ == '__main__':
     config.initializeConfig()
     if len(sys.argv) < 4 or len(sys.argv) > 6:
-        print 'USAGE:', sys.argv[0], USAGE
+        print('USAGE:', sys.argv[0], USAGE)
         sys.exit(0)
     else:
         # type of input data we're working on
@@ -61,4 +61,4 @@ if __name__ == '__main__':
         myStyleSheet.paint( myVrp, mySolution, canvas )
         canvas.canvas.showPage()
         canvas.canvas.save()
-        print 'Saved to', outputFileName
+        print('Saved to', outputFileName)

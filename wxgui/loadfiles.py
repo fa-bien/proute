@@ -127,7 +127,7 @@ class LoadDataDialog(wx.Dialog):
         fileSelector = wx.FileDialog(self,
                                      message="Choose an instance file",
 #                                      defaultDir=os.getcwd(),
-                                     style=wx.OPEN | wx.CHANGE_DIR )
+                                     style=wx.FD_OPEN | wx.FD_CHANGE_DIR )
         if fileSelector.ShowModal() == wx.ID_OK:
             files = fileSelector.GetPaths()
             self.instanceNameField.SetValue(str(files[0]))

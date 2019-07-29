@@ -8,7 +8,7 @@ import math
 
 import wx
 
-from vrppanel import VrpPanel
+from .vrppanel import VrpPanel
 import util
 
 # present routes in a grid, with each cell displaying a different part of the
@@ -55,7 +55,7 @@ class GridViewer(wx.Frame):
         for vSizer, label, panel, count in zip(vSizers,
                                                labels,
                                                self.panels,
-                                               range(len(attributeValues))):
+                                               list(range(len(attributeValues)))):
             vSizer.Add(wx.StaticText(self, label=label),
                        proportion=0,
                        flag=wx.ALIGN_CENTER | wx.ALL,

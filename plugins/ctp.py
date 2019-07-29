@@ -7,6 +7,7 @@ import string
 
 import vrpdata
 import stylesheet
+from functools import reduce
 
 # additional padding for the map: forces a map wider than required to place
 # just all nodes
@@ -132,7 +133,7 @@ class CTPSolutionData(vrpdata.VrpSolutionData):
                        for i in range(vrpData.attributes['number of nodes']) ]
         # temporary variables
         # process each line
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             line = line.split()
             toks = string.replace(string.replace(line[0], ']', ' '),
                                   '[', ' ').split()

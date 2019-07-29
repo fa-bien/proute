@@ -10,8 +10,8 @@ import math
 import wx
 
 import config
-import wxcanvas
-import events
+from . import wxcanvas
+from . import events
 
 # zoom operations on the displayed solution
 maxZoom=10000
@@ -67,7 +67,7 @@ class VrpPanel(wx.Panel):
         self.nTimesSaved = 0
         
     def onPaint(self, event):
-        ww, hh = self.GetClientSizeTuple()
+        ww, hh = self.GetClientSize()
         # Declaration of the device context for drawing
         if self.IsDoubleBuffered() and self.CanSetTransparent():
             dc = wx.PaintDC(self)
@@ -93,7 +93,7 @@ class VrpPanel(wx.Panel):
 #                                   arc['to'] in allowedNodes)
 
     def rePaint(self):
-        ww, hh = self.GetClientSizeTuple()
+        ww, hh = self.GetClientSize()
         if self.IsDoubleBuffered() and self.CanSetTransparent():
             dc = wx.ClientDC(self)
         else:
@@ -133,7 +133,7 @@ class VrpPanel(wx.Panel):
     def mouseOverMap(self, event):
         self.SetFocus()
         x, y = event.GetPosition()
-        y = self.GetClientSizeTuple()[1] - y
+        y = self.GetClientSize()[1] - y
         maxDist = maxDistToNeighbourFactor * \
             math.hypot(self.styleSheet.xmax - self.styleSheet.xmin,
                        self.styleSheet.ymax - self.styleSheet.ymin)
@@ -149,7 +149,7 @@ class VrpPanel(wx.Panel):
     # mouse dragging: drag the map if possible
     def dragMap(self, event):
         x, y = event.GetPosition()
-        x, y = self.revX(x), self.revY(self.GetClientSizeTuple()[1] - y)
+        x, y = self.revX(x), self.revY(self.GetClientSize()[1] - y)
         width = self.styleSheet.xmax - self.styleSheet.xmin
         height = self.styleSheet.ymax - self.styleSheet.ymin
         centerX = (self.styleSheet.xmax + self.styleSheet.xmin) / 2.0
@@ -161,7 +161,7 @@ class VrpPanel(wx.Panel):
         # update the coordinates _after_ updating the view, in case we
         # requested something out of the map
         x, y = event.GetPosition()
-        x, y = self.revX(x), self.revY(self.GetClientSizeTuple()[1] - y)
+        x, y = self.revX(x), self.revY(self.GetClientSize()[1] - y)
         self.dragX, self.dragY = x, y
             
     # double-click event handler: save the panel to a pdf file
@@ -171,8 +171,8 @@ class VrpPanel(wx.Panel):
     def exportToPDF(self, fName=None, dirName=None):
         self.nTimesSaved += 1
 #         ww, hh = (self.inputData.width, self.inputData.height) \
-#             if self.styleSheet.keepAspectRatio else self.GetClientSizeTuple()
-        ww, hh = self.GetClientSizeTuple()
+#             if self.styleSheet.keepAspectRatio else self.GetClientSize()
+        ww, hh = self.GetClientSize()
         if fName is None:
             fName = self.solutionData.name + '-' + str(self.nTimesSaved) +'.pdf'
         if not dirName is None:
@@ -190,7 +190,7 @@ class VrpPanel(wx.Panel):
 #         renderPDF.drawToFile(canvas.drawing, fName)
             canvas.canvas.showPage()
             canvas.canvas.save()
-            print 'Saved to', fName
+            print('Saved to', fName)
 #             os.chdir(currentDir)
         except Exception as e:
             dialog = wx.MessageDialog(self,
@@ -206,7 +206,7 @@ class VrpPanel(wx.Panel):
         # be totally different
         value = 1 if event.GetWheelRotation() > 0 else -1
         x, y = event.GetPosition()
-        x, y = self.revX(x), self.revY(self.GetClientSizeTuple()[1] - y)
+        x, y = self.revX(x), self.revY(self.GetClientSize()[1] - y)
         width = self.styleSheet.xmax - self.styleSheet.xmin
         height = self.styleSheet.ymax - self.styleSheet.ymin
         dx1 = x - (self.styleSheet.xmin + width / 2.0)
@@ -263,15 +263,15 @@ class VrpPanel(wx.Panel):
     # for debug purpose only
     def onRightClick(self, event):
         x, y = event.GetPosition()
-        x, y = self.revX(x), self.revY(self.GetClientSizeTuple()[1] - y)
-        print x, y
+        x, y = self.revX(x), self.revY(self.GetClientSize()[1] - y)
+        print(x, y)
 
     # store mouse position when pressing mouse button, in order to allow to drag
     # the map
     def storePosition(self, event):
         x, y = event.GetPosition()
         self.dragX, self.dragY = \
-            self.revX(x), self.revY(self.GetClientSizeTuple()[1] - y)
+            self.revX(x), self.revY(self.GetClientSize()[1] - y)
         
     # store mouse position when pressing mouse button, in order to allow to drag
     # the map
@@ -302,11 +302,11 @@ class VrpPanel(wx.Panel):
         elif event.GetKeyCode() == wx.WXK_DOWN:
             centerY -= yoffset
         # +
-        elif unichr(event.GetUnicodeKey()) == '+':
+        elif chr(event.GetUnicodeKey()) == '+':
             width /= zoomFactor
             height /= zoomFactor
         # -
-        elif unichr(event.GetUnicodeKey()) == '-':
+        elif chr(event.GetUnicodeKey()) == '-':
             width *= zoomFactor
             height *= zoomFactor
         elif event.GetUnicodeKey() == wx.WXK_DELETE or \

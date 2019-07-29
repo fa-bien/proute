@@ -18,7 +18,7 @@ class FNDPInputData(vrpdata.VrpInputData):
         self.nodes = []
         self.attributes = {'# periods': 0}
         # load a MCDARP instance
-        for line in file.readlines(file(fName)):
+        for line in open(fName).readlines():
             if line[0] == '#':
                 continue
             else:
@@ -59,8 +59,8 @@ class FNDPSolutionData(vrpdata.VrpSolutionData):
         self.nodeAttributes += [ 'first period' ]
         self.routes = []
         for node in self.nodes:
-            node['first period'] = sys.maxint
-        for line in file.readlines(file(fName)):
+            node['first period'] = sys.maxsize
+        for line in open(fName).readlines():
             tokens = line.split()
             if tokens[0] == '***':
                 continue

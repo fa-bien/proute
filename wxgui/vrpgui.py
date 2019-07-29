@@ -8,17 +8,18 @@ import sys
 
 import wx
 
-import vrpframe
-import gridview
+from . import vrpframe
+from . import gridview
 import stylesheet
-import events
-import prefsdialog
+from . import events
+from . import prefsdialog
 # from vrpexceptions import MissingAttributeException
 
 # from sscontrols import StyleSheetControls, ssControlWidth, ssControlHeight
 # from solutionbrowser import SolutionBrowser, nodeInfoWidth
 # from gridview import GridViewer
-import guiconfig
+from . import guiconfig
+from functools import reduce
 
 class VrpGui(wx.App):
     def __init__(self, myVrp, mySolutions, myStyleSheet,
@@ -31,7 +32,7 @@ class VrpGui(wx.App):
         # list of all open frames (useful for saving layout)
         self.openFrames = []
         # all events that can reach this object
-        self.Bind(events.EVT_QUIT, lambda(e): self.quitApp())
+        self.Bind(events.EVT_QUIT, lambda e: self.quitApp())
         self.Bind(events.EVT_SAVE_SESSION, lambda e: self.saveSession())
         self.Bind(events.EVT_LOAD_SESSION, lambda e: self.loadSession())
         self.Bind(events.EVT_LOAD_DATA, self.loadDataEventHandler)
@@ -48,9 +49,9 @@ class VrpGui(wx.App):
                 if len(self.openFrames) > 0:
                     return
             except Exception as e:
-                print 'Unable to load session:', \
-                    guiconfig.lastSessionFileName
-                print e #, dir(e)
+                print('Unable to load session:', \
+                    guiconfig.lastSessionFileName)
+                print(e) #, dir(e)
         self.loadData(myVrp, mySolutions, myStyleSheet)
         
         
@@ -109,7 +110,7 @@ class VrpGui(wx.App):
         # this can happen if the user cancels the program from the start
         # saving the session and automatically loading it at program startup
         # would result in the program exiting immediately
-        self.Exit()
+        self.ExitMainLoop()
         sys.exit(0)
 
     # save the session
@@ -156,7 +157,7 @@ class VrpGui(wx.App):
                             'selectedSolution=mySelectedSolution)' + '\n')
 
             f.close()
-            print 'Stored session to', fName
+            print('Stored session to', fName)
 
     # load the session
     def loadSession(self, fileName=None):
@@ -182,8 +183,8 @@ class VrpGui(wx.App):
                 try:
                     exec(line)
                 except Exception as e:
-                    print 'problem while loading session with line', line
-                    print e
+                    print('problem while loading session with line', line)
+                    print(e)
 #                 self.quitApp()
 #             # case where we read everything we need for this frame
 #                 if line[:18] == 'mySelectedSolution':
@@ -196,7 +197,7 @@ class VrpGui(wx.App):
             # clear already opened frames
             for frame in oldFrames:
                 frame.closeFrame()
-            print 'Loaded session from', fileName
+            print('Loaded session from', fileName)
 
     # register a new frame
     def registerFrame(self, event):
@@ -223,7 +224,7 @@ def loadDataInteractively(problemType=None,
                           instanceFileName=None,
                           solutionType=None,
                           solutionFileNames=None):
-    import loadfiles
+    from . import loadfiles
     import loaddata
     fileLoader = loadfiles.LoadDataDialog(None,
                                           problemType,

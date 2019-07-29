@@ -26,7 +26,7 @@ class BackgroundBitmapDisplayer( Style ):
     # xNW and yNW are the coordinates of the north-west corner point of the map
     # xSE and ySE are the coordinates of the south-east corner point of the map
     # acceptable values for corner point parameters
-    intInfo = IntParameterInfo(-sys.maxint, sys.maxint)
+    intInfo = IntParameterInfo(-sys.maxsize, sys.maxsize)
     parameterInfo = {
         'xNW': intInfo,
         'yNW': intInfo,

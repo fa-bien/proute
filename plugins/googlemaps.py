@@ -6,22 +6,22 @@
 import string
 import sys
 import os
-import urllib
-import StringIO
+import urllib.request, urllib.parse, urllib.error
+import io
 import json
 from math import *
 
 try:
     import Image
-    print 'Loaded PIL'
+    # print('Loaded PIL')
 except Exception as e:
-    print 'PIL not installed, looking for Pillow'
+    # print('PIL not installed, looking for Pillow')
     try:
         # is pillow installed?
         from PIL import Image
-        print 'Loaded Pillow'
+        # print('Loaded Pillow')
     except Exception as ee:
-        print 'Cannot find Pillow! Exiting...'
+        print('Cannot find PIL or Pillow! Exiting...')
         sys.exit(65)
 
 import vrpdata
@@ -105,7 +105,7 @@ class GoogleMapDisplayer( Style ):
         # finally we add 1 zoom level since we will take a 512x512 picture i.e.
         # four google maps tiles instead of 1
         zoomLevel += 1
-        print mapWidth, mapHeight
+        print(mapWidth, mapHeight)
         # now that we have the optimal zoom level we can compute the coordinates
         # of the top left corner
         self.xNW = self.centerX - mapWidth / 2.0
@@ -121,8 +121,8 @@ class GoogleMapDisplayer( Style ):
 #         print 'built url: ', url
         data = cache.get(url)
         self.bitmap = Image.open(data)
-        print self.xNW, self.xSE, self.ySE, self.yNW
-        print inputData.xmin, inputData.xmax, inputData.ymin, inputData.ymax
+        print(self.xNW, self.xSE, self.ySE, self.yNW)
+        print(inputData.xmin, inputData.xmax, inputData.ymin, inputData.ymax)
 #         self.bitmap.show()
 
 # This version takes a higher quality map
@@ -238,7 +238,7 @@ class GoogleMapsRoutes( basestyles.RouteColourDisplayer ):
         if self.values is None:
             # we construct a unique value-colour mapping
             # we only want to accept attributes that return hashable values
-            acceptable = lambda(x): \
+            acceptable = lambda x: \
                 not (isinstance(x, dict) or isinstance(x, list))
             self.parameterInfo['attribute'] = \
                 RouteAttributeParameterInfo(solutionData, acceptable)

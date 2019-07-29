@@ -30,7 +30,7 @@ def computeNodeIndices(inputData,
 def computeHorizon(inputData,
                    solutionData):
     dates = []
-    indices = range(len(inputData.nodes))
+    indices = list(range(len(inputData.nodes)))
     for index in indices:
         for attr in dateInputAttributes:
             if attr in inputData.nodes[index]:

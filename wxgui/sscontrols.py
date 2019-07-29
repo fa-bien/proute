@@ -8,9 +8,9 @@ import wx
 from wx.lib.scrolledpanel import ScrolledPanel
 
 import style
-import events
-from stylecontrols import StyleEditor
-from addstyle import AddStyleDialog
+from . import events
+from .stylecontrols import StyleEditor
+from .addstyle import AddStyleDialog
 from vrpexceptions import MissingAttributeException
 
 ssControlWidth = 240
@@ -75,7 +75,7 @@ class StyleSheetEditor(wx.Panel):
                                               size=(ssControlWidth,
                                                     ssControlHeight),
                                               choices=listLabels)
-        self.styleCheckList.SetChecked(checked)
+        self.styleCheckList.SetCheckedItems(checked)
         sizer.Add(self.styleCheckList, 0, wx.EXPAND)
         # we also add four buttons for manipulating styles
         # for that we use a grid
