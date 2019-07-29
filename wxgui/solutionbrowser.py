@@ -171,7 +171,7 @@ class NodeInputInformationList(wx.ListCtrl):
             if self.values[self.sortedAttributes[0]] != '':
                 for index in range(self.GetItemCount()):
                     self.values[self.GetItemText(index)] = ''
-                    self.SetStringItem(index, 1, '')
+                    self.SetItem(index, 1, '')
         # case where we just hovered over a node
         else:
             nodeSol = solutionData.nodes[node['index']]
@@ -183,7 +183,7 @@ class NodeInputInformationList(wx.ListCtrl):
                                                        solutionData)
                 except Exception as e:
                     self.values[self.GetItemText(index)] = ''
-                self.SetStringItem(index, 1,
+                self.SetItem(index, 1,
                                    str(self.values[self.GetItemText(index)]))
 
 # obsolete class?
@@ -205,7 +205,7 @@ class NodeInputInformationGrid(wx.grid.Grid):
 
         # count the number of columns we need for displaying attributes,
         # knowing that we use nRows rows or less
-        self.nColumns = 1 + (len(self.sortedAttributes)-1) / self.nRows
+        self.nColumns = 1 + (len(self.sortedAttributes)-1) // self.nRows
         # create each necessary column (and its "value" counterpart)
         self.CreateGrid(self.nRows, self.nColumns * 2)
         # set column names
@@ -235,7 +235,7 @@ class NodeInputInformationGrid(wx.grid.Grid):
 #             self.SetColSize(i, self.GetColSize(i) * 1.3)
         for index, a in enumerate(self.sortedAttributes):
             self.SetCellValue(index % self.nRows,
-                              2 * (index / self.nRows),
+                              2 * (index // self.nRows),
                               a)
 
     def updateNodeInfo(self, node):
@@ -245,7 +245,7 @@ class NodeInputInformationGrid(wx.grid.Grid):
             if self.GetCellValue(1, 1) != '':
                 for index, a in enumerate(self.sortedAttributes):
                     self.SetCellValue(index % self.nRows,
-                                      2 * (index / self.nRows) + 1,
+                                      2 * (index // self.nRows) + 1,
                                       '')
         # case where we just hovered over a node
         else:

@@ -367,7 +367,7 @@ class VrpFrame(wx.Frame):
     def popGridControls(self, event):
         try:
             self.gridManager.Destroy()
-        except AttributeError:
+        except (AttributeError, RuntimeError):
             from . import gridmanagement
             self.gridManager = \
                 gridmanagement.GridManager(self, self.styleSheet,

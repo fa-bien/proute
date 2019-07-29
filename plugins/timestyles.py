@@ -60,10 +60,8 @@ class TimeDataDisplayer(Style):
         # first-time-only block
         if self.timeToX is None:
             self.earliest = \
-                min( [ x['release time']
-                       for x in inputData.nodes ], 0 )
-            self.latest = max( [ x['due date']
-                                 for x in inputData.nodes ] )
+                min( 0, min([ x['release time'] for x in inputData.nodes ]) )
+            self.latest = max( [ x['due date'] for x in inputData.nodes ] )
             self.timeToX = util.intervalMapping(self.earliest, self.latest,
                                                 0.0,
                                                 self.parameterValue['width'])

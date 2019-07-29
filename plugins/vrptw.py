@@ -24,18 +24,18 @@ class VRPTWInputData(vrpdata.VrpInputData):
         for line in open(fName).readlines():
             tokens = line.split()
             if len(tokens) == 2 and tokens[0] != 'NUMBER':
-                self.attributes['capacity'] = string.atoi(tokens[1])
+                self.attributes['capacity'] = int(tokens[1])
             elif len(tokens) == 7:
                 thisNode = {}
                 thisNode['index'] = cpt
                 thisNode['label'] = tokens[0]
                 thisNode['is depot'] = True if cpt == 0 else False
-                thisNode['demand'] = string.atof(tokens[3])
-                thisNode['x'] = string.atof(tokens[1])
-                thisNode['y'] = string.atof(tokens[2])
-                thisNode['release time'] = string.atof(tokens[4])
-                thisNode['due date'] = string.atof(tokens[5])
-                thisNode['service time'] = string.atof(tokens[6])
+                thisNode['demand'] = float(tokens[3])
+                thisNode['x'] = float(tokens[1])
+                thisNode['y'] = float(tokens[2])
+                thisNode['release time'] = float(tokens[4])
+                thisNode['due date'] = float(tokens[5])
+                thisNode['service time'] = float(tokens[6])
                 self.nodes.append(thisNode)
                 cpt += 1
             else:
@@ -58,7 +58,7 @@ class VRPTWKritzingerSolutionData(vrpdata.VrpSolutionData):
                 continue
             else:
                 thisRoute = {}
-                thisRoute['index'] = string.atoi(tokens[1][:-1])
+                thisRoute['index'] = int(tokens[1][:-1])
                 thisRoute['node sequence'] = eval('[' + tokens[2] + ']')
                 self.routes.append(thisRoute)
                 cpt += 1

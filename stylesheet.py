@@ -248,7 +248,7 @@ class StyleSheet(object):
                 wPrime = 1.0 / inputData.heightOverWidth
                 self.nColumnsInGrid = \
                     int(ceil(sqrt(gridSize * wPrime) / wPrime))
-            self.nRowsInGrid = 1 + (gridSize-1) / self.nColumnsInGrid
+            self.nRowsInGrid = 1 + (gridSize-1) // self.nColumnsInGrid
             # compute number of rows from number of columns
             nColumns = self.nColumnsInGrid
             nRows = self.nRowsInGrid
@@ -269,7 +269,7 @@ class StyleSheet(object):
         for i, cell in enumerate(attributeValues):
             # grid coordinates for the cell
             cellX = i % nColumns
-            cellY = i / nColumns
+            cellY = i // nColumns
             # real coordinates of the cell
             cellXmin = cellX * cellWidth
             cellXmax = cellXmin + cellWidth - gridCellPadding

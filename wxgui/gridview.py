@@ -33,7 +33,7 @@ class GridViewer(wx.Frame):
         colsPerRow = 4.0/3.0 * inputData.heightOverWidth
         gridWidth = int(colsPerRow * gridWidth)
         #
-        gridHeight = 1 + gridSize / gridWidth
+        gridHeight = 1 + gridSize // gridWidth
         gridSizer = wx.GridSizer(gridHeight, gridWidth,
                                  vgap = 5, hgap = 5)
         #

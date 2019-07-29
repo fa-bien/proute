@@ -178,7 +178,7 @@ class ColourMapEditor(wx.Dialog):
         self.cells += [ csel.ColourSelect(panel, -1,
                                           colour=convertColour(dummyColour))
                         for x in range(nColours-len(self.cells)) ]
-        nRows = len(self.cells) / nColumns
+        nRows = len(self.cells) // nColumns
         # now we put the cells in a grid...
         gridSizer = wx.FlexGridSizer(cols=nColumns+1, vgap=3, hgap=3)
         gridSizer.Add(wx.StaticText(panel, -1, ''))

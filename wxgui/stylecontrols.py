@@ -32,10 +32,6 @@ class StyleEditor(wx.Panel):
         self.mainSizer.Add(self.sw, 0, wx.EXPAND)
         self.SetSizer(self.mainSizer)
 #         self.Bind(events.EVT_STYLESHEET_UPDATE, self.prout)
-
-#     def prout(self, event):
-#         print 'prout'
-#         event.Skip()
         
     def setEditable(self, styleToEdit):
         # delete the last edited style if there is one

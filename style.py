@@ -169,7 +169,7 @@ class DrawingStyle:
     def __init__(self,
                  lineColour=None,
                  fillColour=None,
-                 lineThickness=None,
+                 lineThickness=1,
                  lineStyle='solid'):
         self._lineColour = lineColour
         self.lineThickness = lineThickness
@@ -258,15 +258,26 @@ class Style( object ):
                   canvas, convertX, convertY,
                   nodePredicate, routePredicate, arcPredicate,
                   boundingBox):
-        try:
-            self.preProcessAttributes(inputData, solutionData)
-            self.paint(inputData, solutionData,
-                       canvas, convertX, convertY,
-                       nodePredicate, routePredicate, arcPredicate,
-                       boundingBox)
-        except Exception as e:
-            print('Cannot paint using style ' + self.__class__.__name__ + \
-                ': ' + str(e))
+        self.preProcessAttributes(inputData, solutionData)
+        self.paint(inputData, solutionData,
+                   canvas, convertX, convertY,
+                   nodePredicate, routePredicate, arcPredicate,
+                   boundingBox)
+
+    # # this is the wrapper method called by the stylesheet class
+    # def paintData(self, inputData, solutionData,
+    #               canvas, convertX, convertY,
+    #               nodePredicate, routePredicate, arcPredicate,
+    #               boundingBox):
+    #     try:
+    #         self.preProcessAttributes(inputData, solutionData)
+    #         self.paint(inputData, solutionData,
+    #                    canvas, convertX, convertY,
+    #                    nodePredicate, routePredicate, arcPredicate,
+    #                    boundingBox)
+    #     except Exception as e:
+    #         print('Cannot paint using style ' + self.__class__.__name__ + \
+    #             ': ' + str(e))
             
     def preProcessAttributes(self, vrpData, solutionData):
         for attr in self.requiredGlobalAttributes:
