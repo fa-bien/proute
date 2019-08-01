@@ -1,7 +1,6 @@
 #
 # File created during the fall of 2010 (northern hemisphere) by Fabien Tricoire
 # fabien.tricoire@univie.ac.at
-# Last modified: August 6th 2011 by Fabien Tricoire
 #
 import string
 import sys
@@ -31,13 +30,31 @@ import colours
 import basestyles
 import config
 
+# Needed for Google Maps static API
+API_KEY=''
+apiFileName = os.path.join(config.userConfigDir, 'google_maps_api_key.txt')
+try:
+    with open(apiFileName) as f:
+        API_KEY = f.read().replace('\n', '')
+except Exception as e:
+    print("""
+    Cannot find Google Maps static API key, which is necessary for the
+    Google Maps plugin. Download an API key for free at
+    https://cloud.google.com/maps-platform/#get-started
+    Then save it to""", apiFileName, '\n\n')
+
 # use a cache to minimize redundant requests to google
 cacheFileName = os.path.join(config.userConfigDir, 'googlemaps.cache')
-googleMapsPrefix = 'http://maps.google.com/maps/api/'
+googleMapsPrefix = 'https://maps.googleapis.com/maps/api/'
+
 cache = util.PersistentWebCache(cacheFileName, googleMapsPrefix)
+
+print('Using cache:', cacheFileName)
+
 # size of the google maps we download
 googleMapSize = 512
 # extra border we want to download in some cases to hide the logo in the middle
+# logo will still be displayed in corners
 googleExtraMapSize = 640 - 512
 # Display a map...
 class GoogleMapDisplayer( Style ):
@@ -105,7 +122,7 @@ class GoogleMapDisplayer( Style ):
         # finally we add 1 zoom level since we will take a 512x512 picture i.e.
         # four google maps tiles instead of 1
         zoomLevel += 1
-        print(mapWidth, mapHeight)
+        # print(mapWidth, mapHeight)
         # now that we have the optimal zoom level we can compute the coordinates
         # of the top left corner
         self.xNW = self.centerX - mapWidth / 2.0
@@ -114,7 +131,8 @@ class GoogleMapDisplayer( Style ):
         self.xSE = self.centerX + mapWidth / 2.0
         self.ySE = self.centerY - mapHeight / 2.0
         # step 2: construct the URL
-        url = 'staticmap?center=' + str(self.centerY) + ',' + \
+        prefix = 'staticmap?key=' + str(API_KEY)
+        url = prefix + '&center=' + str(self.centerY) + ',' + \
             str(self.centerX) + '&zoom=' + str(zoomLevel) + \
             '&size=' + str(googleMapSize) + 'x' + str(googleMapSize) + \
             '&sensor=false&format=png'
@@ -166,19 +184,20 @@ class GoogleBetterMapDisplayer(GoogleMapDisplayer):
         centerYS = (self.centerY + self.ySE) / 2
         centerXW = (self.centerX + self.xNW) / 2
         centerXE = (self.centerX + self.xSE) / 2
-        urlNW = 'staticmap?center=' + str(centerYN) + ',' + \
+        prefix = 'staticmap?key=' + str(API_KEY)
+        urlNW = prefix + '&center=' + str(centerYN) + ',' + \
             str(centerXW) + '&zoom=' + str(zoomLevel + 1) + \
             '&size=' + str(googleMapSize) + 'x' + str(googleMapSize) + \
             '&sensor=false&format=png'
-        urlNE = 'staticmap?center=' + str(centerYN) + ',' + \
+        urlNE = prefix + '&center=' + str(centerYN) + ',' + \
             str(centerXE) + '&zoom=' + str(zoomLevel + 1) + \
             '&size=' + str(googleMapSize) + 'x' + str(googleMapSize) + \
             '&sensor=false&format=png'
-        urlSW = 'staticmap?center=' + str(centerYS) + ',' + \
+        urlSW = prefix + '&center=' + str(centerYS) + ',' + \
             str(centerXW) + '&zoom=' + str(zoomLevel + 1) + \
             '&size=' + str(googleMapSize) + 'x' + str(googleMapSize) + \
             '&sensor=false&format=png'
-        urlSE = 'staticmap?center=' + str(centerYS) + ',' + \
+        urlSE = prefix + '&center=' + str(centerYS) + ',' + \
             str(centerXE) + '&zoom=' + str(zoomLevel + 1) + \
             '&size=' + str(googleMapSize) + 'x' + str(googleMapSize) + \
             '&sensor=false&format=png'
@@ -191,7 +210,7 @@ class GoogleBetterMapDisplayer(GoogleMapDisplayer):
         bitmapNE = Image.open(dataNE)
         bitmapSW = Image.open(dataSW)
         bitmapSE = Image.open(dataSE)
-        bitmap = Image.new('RGB', (googleMapSize*2, googleMapSize*2))
+        bitmap = Image.new('RGBA', (googleMapSize*2, googleMapSize*2))
         bitmap.paste( bitmapNW, (0, 0) )
         bitmap.paste( bitmapNE, (googleMapSize, 0) )
         bitmap.paste( bitmapSW, (0, googleMapSize) )
@@ -295,9 +314,10 @@ class GoogleMapsRoutes( basestyles.RouteColourDisplayer ):
     # a list of 2-uple is returned, each of which represents a point on the path
     def retrievePath(self, inputData, node1, node2, reload=False):
         points = []
-        url = 'directions/json?sensor=false&origin=' + str(node1['y']) + \
-            ',' + str(node1['x']) + '&destination=' + str(node2['y']) + ',' + \
-            str(node2['x'])
+        prefix = 'directions/json?key=' + str(API_KEY)
+        url = prefix + '&directions/json?sensor=false&origin=' + \
+            str(node1['y']) + ',' + str(node1['x']) + '&destination=' + \
+            str(node2['y']) + ',' + str(node2['x'])
 #         print url
         data = json.load(cache.get(url, reload))
         for route in data['routes']:

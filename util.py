@@ -3,6 +3,7 @@
 # fabien.tricoire@univie.ac.at
 #
 import os
+import atexit
 import pickle
 import urllib.request, urllib.error, urllib.parse
 import io
@@ -118,7 +119,7 @@ class PersistentWebCache:
         # if the file already exists, try to load it
         if os.path.exists(self.fileName):
             try:
-                f = open(self.fileName, 'r')
+                f = open(self.fileName, 'rb')
                 loadedPrefix = pickle.load(f)
                 if self.prefix == loadedPrefix:
                     self.dict = pickle.load(f)
@@ -130,24 +131,25 @@ class PersistentWebCache:
             except Exception as e:
                 print(e)
                 f.close()
+        # make sure we store the cache before the program exits
+        atexit.register(self.storeToDisk)
                         
     def get(self, key, reload=False):
         if reload or not key in self.dict:
-            print('downloading', key)
             url = self.prefix + key
+            print('downloading', url)
             data = urllib.request.urlopen(url).read()
             self.dict[key] = data
             self.modified = True
         else:
             data = self.dict[key]
-        return io.StringIO(data)
+        return io.BytesIO(data)
 
-    def __del__(self):
+    def storeToDisk(self):
         if self.modified:
-            f = open(self.fileName, 'w')
-            pickle.dump(self.prefix, f)
-            pickle.dump(self.dict, f)
-            f.close()
+            with open(self.fileName, 'wb') as f:
+                pickle.dump(self.prefix, f)
+                pickle.dump(self.dict, f)
             print('Stored web cache to', self.fileName)
 
 # escape characters that might otherwise be interpreted in an inappropriate way
@@ -159,7 +161,7 @@ def version():
     return '0.1a'
 # proute program copyright
 def copyright():
-    return '(C) Fabien Tricoire 2010-2011'
+    return '(C) Fabien Tricoire 2010-2019'
 # proute program contact information
 def contact():
     return 'f_tricoire@yahoo.fr'

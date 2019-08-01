@@ -130,7 +130,7 @@ class StyleSheetEditor(wx.Panel):
         listLabels = [ x.description for x in self.styles ]
         self.styleCheckList.Clear()
         self.styleCheckList.AppendItems(listLabels)
-        self.styleCheckList.SetChecked(checked)
+        self.styleCheckList.SetCheckedItems(checked)
 
     # update the keepAspectRatio value if the box is (un)checked
     def aspectRatioCheckboxHandler(self, event):

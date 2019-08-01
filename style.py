@@ -1,7 +1,6 @@
 #
 # File created during the fall of 2010 (northern hemisphere) by Fabien Tricoire
 # fabien.tricoire@univie.ac.at
-# Last modified: September 21st 2011 by Fabien Tricoire
 #
 # this file contains styles used to display input and solution data for routing
 # problems
@@ -258,26 +257,15 @@ class Style( object ):
                   canvas, convertX, convertY,
                   nodePredicate, routePredicate, arcPredicate,
                   boundingBox):
-        self.preProcessAttributes(inputData, solutionData)
-        self.paint(inputData, solutionData,
-                   canvas, convertX, convertY,
-                   nodePredicate, routePredicate, arcPredicate,
-                   boundingBox)
-
-    # # this is the wrapper method called by the stylesheet class
-    # def paintData(self, inputData, solutionData,
-    #               canvas, convertX, convertY,
-    #               nodePredicate, routePredicate, arcPredicate,
-    #               boundingBox):
-    #     try:
-    #         self.preProcessAttributes(inputData, solutionData)
-    #         self.paint(inputData, solutionData,
-    #                    canvas, convertX, convertY,
-    #                    nodePredicate, routePredicate, arcPredicate,
-    #                    boundingBox)
-    #     except Exception as e:
-    #         print('Cannot paint using style ' + self.__class__.__name__ + \
-    #             ': ' + str(e))
+        try:
+            self.preProcessAttributes(inputData, solutionData)
+            self.paint(inputData, solutionData,
+                       canvas, convertX, convertY,
+                       nodePredicate, routePredicate, arcPredicate,
+                       boundingBox)
+        except Exception as e:
+            print('Cannot paint using style ' + self.__class__.__name__ + \
+                ': ' + str(e))
             
     def preProcessAttributes(self, vrpData, solutionData):
         for attr in self.requiredGlobalAttributes:

@@ -72,7 +72,7 @@ class VrpPanel(wx.Panel):
         if self.IsDoubleBuffered() and self.CanSetTransparent():
             dc = wx.PaintDC(self)
         else:
-            myBuffer = wx.EmptyBitmap(ww, hh)
+            myBuffer = wx.Bitmap(ww, hh)
             dc = wx.GCDC(wx.BufferedPaintDC(self, myBuffer))
         # end of device context declaration
         # Now we need to declare a canvas object...
@@ -97,7 +97,7 @@ class VrpPanel(wx.Panel):
         if self.IsDoubleBuffered() and self.CanSetTransparent():
             dc = wx.ClientDC(self)
         else:
-            myBuffer = wx.EmptyBitmap(ww, hh)
+            myBuffer = wx.Bitmap(ww, hh)
             dc = wx.GCDC(wx.BufferedDC(wx.ClientDC(self), myBuffer))
         # end of device context declaration
         # Now we need to declare a canvas object...

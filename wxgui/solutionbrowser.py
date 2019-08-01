@@ -118,7 +118,7 @@ class SolutionListBook(wx.Listbook):
             self.GetPage(i).styleSheet = newSheet
             # update the thumbnail
             memdc = wx.MemoryDC()
-            bitmap = wx.EmptyBitmap(self.thumbnailWidth, self.thumbnailHeight)
+            bitmap = wx.Bitmap(self.thumbnailWidth, self.thumbnailHeight)
             memdc.SelectObject(bitmap)
             dc = wx.GCDC(memdc)
             canvas = wxcanvas.WxThumbnailCanvas(dc,
