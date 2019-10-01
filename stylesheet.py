@@ -364,7 +364,7 @@ class StyleSheet(object):
             f.write( 'import ' + m + '\n')
         f.write('# user stylesheet' + '\n')
         className = name + 'UserStyleSheet'
-        className = string.upper(className[0]) + className[1:]
+        className = className[0].upper() + className[1:]
         f.write('class ' + className + '(stylesheet.StyleSheet):' + '\n')
         f.write(indent1 + 'defaultFor = ' + str(defaultFor) + '\n')
         f.write(indent1 + '# load sheet defaults' + '\n')

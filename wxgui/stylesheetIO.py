@@ -99,9 +99,9 @@ class SaveStyleSheetDialog(wx.Dialog):
         availableTypes = loader.getAvailableTypes()
         self.problemList = wx.CheckListBox(self,
                                            choices=availableTypes)
-        self.problemList.SetChecked( [ i
-                                       for i, t in enumerate(availableTypes)
-                                       if t in parent.styleSheet.defaultFor ] )
+        self.problemList.SetCheckedItems(
+            [ i for i, t in enumerate(availableTypes)
+              if t in parent.styleSheet.defaultFor ] )
         mainSizer.Add(label, 0, wx.ALIGN_RIGHT|wx.ALL, 5)
         mainSizer.Add(self.problemList, 0, wx.EXPAND, 5)
         # add standard dialog buttons
