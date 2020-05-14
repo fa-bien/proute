@@ -1,7 +1,6 @@
 #
 # File created during the fall of 2010 (northern hemisphere) by Fabien Tricoire
 # fabien.tricoire@univie.ac.at
-# Last modified: October 4th 2011 by Fabien Tricoire
 #
 import os
 import string
@@ -79,25 +78,7 @@ class StyleSheet(object):
         # True if aspect ratio should be kept, False otherwise
         self.keepAspectRatio = keepAspectRatio
         # all styles for this stylesheet
-        self.styles = []
-        # display a label for each node
-#         self.inputDataStyles.append(basestyles.NodeLabelDisplayer())
-        # display each node's demand
-#         self.inputDataStyles.append(basestyles.NodeDemandDisplayer())
-        # basic style for the solution: display routes
-        self.styles.append(\
-            basestyles.RouteDisplayer())
-#             basestyles.RouteColourDisplayer(drawDepotArcs=True,
-#                                         attribute='vehicle',
-# #                                         colours= [ wx.Colour(0,0,0,255),
-# #                                                    wx.Colour(255,0,0,255),
-# #                                                    wx.Colour(0,255,0,255),
-# #                                                    wx.Colour(0,0,255,255) ]
-#                                                    )
-#             )
-#         self.solutionDataStyles.append(basestyles.RouteSplineDisplayer())
-        # basic style: display nodes
-        self.styles.append(basestyles.NodeDisplayer())
+        self.styles = [basestyles.NodeDisplayer()]
 
     # compute bounding box for drawing operations
     # this returns a box that has the appropriate ratio in case aspect ratio
@@ -347,7 +328,7 @@ class StyleSheet(object):
             os.path.exists(\
             os.path.join(config.userPluginDir, name + '.py')):
             outputFileName = os.path.join(config.userSheetDir,
-                                          'user_' + name + '.py')
+                                          name + '_user.py')
         else:
             outputFileName = os.path.join(config.userSheetDir, name + '.py')
         # (first we check that the directory exists)

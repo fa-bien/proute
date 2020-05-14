@@ -1,7 +1,6 @@
 #
 # File created during the fall of 2010 (northern hemisphere) by Fabien Tricoire
 # fabien.tricoire@univie.ac.at
-# Last modified: July 29th 2011 by Fabien Tricoire
 #
 import types
 
@@ -14,7 +13,6 @@ import loaddata
 # this class pops a dialog in order to load a stylesheet
 class LoadStyleSheetDialog(wx.Dialog):
     def __init__(self, parent):
-#         import config
         wx.Dialog.__init__(self, parent, -1,
                            title='Available stylesheets')
 
