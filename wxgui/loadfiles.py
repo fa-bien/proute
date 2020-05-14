@@ -138,7 +138,7 @@ class LoadDataDialog(wx.Dialog):
         fileSelector = wx.FileDialog(self,
                                      message="Choose solution files",
 #                                      defaultDir=os.getcwd(),
-                                     style=wx.OPEN | wx.CHANGE_DIR |wx.MULTIPLE)
+                        style=wx.FD_OPEN | wx.FD_CHANGE_DIR |wx.FD_MULTIPLE)
         if fileSelector.ShowModal() == wx.ID_OK:
             files = fileSelector.GetPaths()
             self.solutionsNameField.SetValue(str([ str(x) for x in files ]))
