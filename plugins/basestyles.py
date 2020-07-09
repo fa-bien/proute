@@ -79,8 +79,8 @@ class NodeLabelDisplayer( Style ):
     colourInfo = ColourParameterInfo()
     parameterInfo = { 
         'foreground colour': colourInfo,
-        'y offset': IntParameterInfo(-20, 40),
-        'x offset': IntParameterInfo(-40, 20),
+        'y offset': IntParameterInfo(-100, 100),
+        'x offset': IntParameterInfo(-100, 100),
         'font size': IntParameterInfo(6, 40),
         'hide unused nodes': BoolParameterInfo(),
         }

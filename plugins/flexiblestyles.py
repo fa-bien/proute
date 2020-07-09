@@ -27,8 +27,8 @@ class FlexibleSubInterval(Style):
     # used multiple times
     colourInfo = ColourParameterInfo()
     parameterInfo = {
-        'x offset': IntParameterInfo(-40, 20),
-        'y offset': IntParameterInfo(-20, 40),
+        'x offset': IntParameterInfo(-100, 100),
+        'y offset': IntParameterInfo(-100, 100),
         'thickness': IntParameterInfo(0, 20),
         'width': IntParameterInfo(6, 200),
         'height': IntParameterInfo(3, 60),
@@ -142,7 +142,7 @@ class FlexibleSubInterval(Style):
 class NodeAttributeAsRectangleDisplayer( Style ):
     description = 'small bar for attribute'
     # used multiple times
-    offsetInfo = IntParameterInfo(-20, 20)
+    offsetInfo = IntParameterInfo(-100, 100)
     parameterInfo = {
         'x offset': offsetInfo,
         'y offset': offsetInfo,
@@ -256,7 +256,7 @@ class NodeAttributeAsRectangleDisplayer( Style ):
 class NodeListAttributeAsRectanglesDisplayer(NodeAttributeAsRectangleDisplayer):
     description = 'small bars for list attribute'
     # used multiple times
-    offsetInfo = IntParameterInfo(-20, 20)
+    offsetInfo = IntParameterInfo(-100, 100)
     parameterInfo = {
         'x offset': offsetInfo,
         'y offset': offsetInfo,
@@ -327,7 +327,7 @@ class NodeListAttributeAsRectanglesDisplayer(NodeAttributeAsRectangleDisplayer):
 class FlexibleNodeDisplayer( Style ):
     description = 'customizable nodes'
     # used multiple times
-    offsetInfo = IntParameterInfo(-20, 20)
+    offsetInfo = IntParameterInfo(-100, 100)
     parameterInfo = {
         'x offset': offsetInfo,
         'y offset': offsetInfo,
