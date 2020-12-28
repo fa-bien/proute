@@ -1,1 +1,1 @@
-c:\python27\python.exe wxproute.py
+python.exe wxproute.py
