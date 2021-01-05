@@ -158,7 +158,7 @@ class NodeInputInformationList(wx.ListCtrl):
         self.InsertColumn(1, 'Value', width=nodeValueColWidth)
         # fill attribute names already
         for a in self.sortedAttributes:
-            index = self.InsertItem(sys.maxsize, a)
+            index = self.InsertItem(self.GetItemCount(), a)
             self.SetItemBackgroundColour(index, 'white' if index % 2 == 0 else \
                                              wx.Colour(245,245,245))
         # internal data storage (wx.ListCtrl does not provide it, wtf)

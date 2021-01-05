@@ -32,10 +32,10 @@ class StyleSheetControls(ScrolledPanel):
         # style sheet editor: it needs the style editor
         self.styleSheetEditor = StyleSheetEditor(self, styleSheet, styleEditor)
         # now we can add them in the correct order
-        sizer.Add(self.styleSheetEditor, 0, wx.ALIGN_CENTER | wx.EXPAND)
+        sizer.Add(self.styleSheetEditor, 0, wx.EXPAND)
         # padding
 #         sizer.Add((0,5))
-        sizer.Add(styleEditor, 1, wx.ALIGN_CENTER | wx.EXPAND )
+        sizer.Add(styleEditor, 1, wx.EXPAND )
         # finally let's not forget to assign the sizer
         self.SetSizer(sizer)
         self.SetupScrolling()
