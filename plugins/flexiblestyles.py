@@ -283,8 +283,12 @@ class NodeListAttributeAsRectanglesDisplayer(NodeAttributeAsRectangleDisplayer):
         # first-time-only execution
         if not 'attribute' in self.parameterInfo:
             def acceptable(x):
-                return isinstance(x, list) and \
-                    (isinstance(x[0], int) or isinstance(x[0], float))
+                if x == [] or not isinstance(x, list):
+                    return False
+                for i in x:
+                    if not (isinstance(i, int) or isinstance(i, float)):
+                        return False
+                return True
             self.parameterInfo['attribute'] = \
                 NodeInputAttributeParameterInfo(inputData, acceptable)
         # only perform painting if the selected attributes are available

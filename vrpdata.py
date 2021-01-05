@@ -103,12 +103,14 @@ class VrpInputData(object):
     # complete missing data
     def generateMissingData(self):
         for node in self.nodes:
-            if not 'is depot' in node:
+            if not 'is depot' in node.keys():
                 node['is depot'] = False
+            if not 'label' in node.keys():
+                node['label'] = 'node ' + str(node['index'])
         # update node attributes with what's been loaded
         nodeAttributes = set()
         for node in self.nodes:
-            for attribute in node:
+            for attribute in node.keys():
                 nodeAttributes.add(attribute)
         for x in nodeAttributes:
             if not x in self.nodeAttributes:

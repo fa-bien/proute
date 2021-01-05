@@ -369,9 +369,10 @@ class EnumerationParameterInfo(ParameterInfo):
 class NodeInputAttributeParameterInfo(EnumerationParameterInfo):
     def __init__(self, vrpData, acceptable=lambda x: True):
         if vrpData.nodes:
-            node = vrpData.nodes[0]
-            self.possibleValues = [ x for x in vrpData.nodeAttributes
-                                    if x in node and acceptable(node[x]) ]
+            candidates = [ x for x in vrpData.nodeAttributes ]
+            for node in vrpData.nodes:
+                candidates = [ x for x in candidates if acceptable(node[x]) ]
+            self.possibleValues = [ x for x in candidates ]
         else:
             self.possibleValues = []
     def getType(self):
