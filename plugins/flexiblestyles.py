@@ -295,9 +295,10 @@ class NodeListAttributeAsRectanglesDisplayer(NodeAttributeAsRectangleDisplayer):
         if not self.parameterValue['attribute'] in inputData.nodeAttributes:
             return
         # first compute min and max demand if it's the first time we're here
-        if not self.minValue:
-            values = [ max(node[self.parameterValue['attribute']])
-                       for node in inputData.nodes ]
+        if self.minValue is None:
+            print('AAAAAAAA')
+            values = [ x for node in inputData.nodes
+                       for x in node[self.parameterValue['attribute']] ]
             self.minValue, self.maxValue = min(values), max(values)
             self.computeHeight =\
                 util.intervalMapping(self.minValue, self.maxValue,
