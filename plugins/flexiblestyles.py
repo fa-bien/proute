@@ -296,7 +296,6 @@ class NodeListAttributeAsRectanglesDisplayer(NodeAttributeAsRectangleDisplayer):
             return
         # first compute min and max demand if it's the first time we're here
         if self.minValue is None:
-            print('AAAAAAAA')
             values = [ x for node in inputData.nodes
                        for x in node[self.parameterValue['attribute']] ]
             self.minValue, self.maxValue = min(values), max(values)
