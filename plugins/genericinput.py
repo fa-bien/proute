@@ -33,10 +33,10 @@ class PIFInputData(vrpdata.VrpInputData):
         for line in open(fName).readlines():
             line = line.rstrip()
             # ignore comments and empty lines
-            if line[0] == '#' or len(line) == 0:
+            if len(line) == 0 or line[0] == '#':
                 pass
             # first header line
-            elif stage is 'header':
+            elif stage == 'header':
                 if line[:19] != 'proute input file v':
                     raise vrpexceptions.VrpInputFileFormatException('PIF',
                                                                     fName)
@@ -90,7 +90,7 @@ class PSFSolutionData(vrpdata.VrpSolutionData):
             if line[0] == '#' or len(line) == 0:
                 pass
             # first header line
-            if stage is 'header':
+            if stage == 'header':
                 if line[:22] != 'proute solution file v':
                     raise vrpexceptions.VrpInputFileFormatException('PSF',
                                                                     fName)

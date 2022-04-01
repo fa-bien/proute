@@ -399,6 +399,12 @@ class NodeGlobalAttributeParameterInfo(EnumerationParameterInfo):
     def getType(self):
         return 'node attribute'
 
+def getGlobalAttributeValues(inputData, solutionData, attrName):
+    if attrName[0] == '+':
+        return [ x[attrName[1:]] for x in solutionData.nodes ]
+    else:
+        return [ x[attrName] for x in inputData.nodes ]
+    
 # utility function to retrieve attribute values:
 # if there is a heading '+' remove it and look up the attribute in solutionData,
 # else look up the attribute in inputData

@@ -8,8 +8,8 @@ Currently a fast way to reach a state where the program is usable is as follows:
 1. Install Python 3, make sure that it is in your PATH environment variable.
 
 2. Using pip, install dependencies: 
-2.a pip install wxPython
-2.b pip install reportlabl
+2.a pip install wxPython  (this procedure can get complicated, as of writing this you need a Python version no more recent than 3.9)
+2.b pip install reportlab
 
 3. From the directory where wxproute.py is located, run the program: python wxproute.py
 

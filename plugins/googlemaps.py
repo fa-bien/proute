@@ -49,7 +49,7 @@ googleMapsPrefix = 'https://maps.googleapis.com/maps/api/'
 
 cache = util.PersistentWebCache(cacheFileName, googleMapsPrefix)
 
-print('Using cache:', cacheFileName)
+#print('Using cache:', cacheFileName)
 
 # size of the google maps we download
 googleMapSize = 512

@@ -290,26 +290,27 @@ class NodeListAttributeAsRectanglesDisplayer(NodeAttributeAsRectangleDisplayer):
                         return False
                 return True
             self.parameterInfo['attribute'] = \
-                NodeInputAttributeParameterInfo(inputData, acceptable)
-        # only perform painting if the selected attributes are available
-        if not self.parameterValue['attribute'] in inputData.nodeAttributes:
-            return
+                NodeGlobalAttributeParameterInfo(inputData, solutionData,
+                                                 acceptable)
+        # collect all values at all nodes
+        # case where no parameter has been selected
+        if self.parameterValue['attribute'] == '': return
+        values = getGlobalAttributeValues(inputData, solutionData, 
+                                          self.parameterValue['attribute'])
         # first compute min and max demand if it's the first time we're here
         if self.minValue is None:
-            print('AAAAAAAA')
-            values = [ x for node in inputData.nodes
-                       for x in node[self.parameterValue['attribute']] ]
-            self.minValue, self.maxValue = min(values), max(values)
+            flatvalues = [ x for t in values for x in t ]
+            self.minValue, self.maxValue = min(flatvalues), max(flatvalues)
             self.computeHeight =\
                 util.intervalMapping(self.minValue, self.maxValue,
                                      self.parameterValue['min. height'],
                                      self.parameterValue['max. height'])
         # second only continue if an attribute is specified
         # we use a different colour (hence style) for each item
-        nElements = len(inputData.nodes[0][self.parameterValue['attribute']])
+        nElements = len(values[0])
         for i in range(nElements):
             allX, allY, allW, allH = [], [], [], []
-            for node in inputData.nodes:
+            for node, vals in zip(inputData.nodes, values):
                 if (nodePredicate and not nodePredicate(node)) or \
                         node['is depot']:
                     continue
@@ -321,8 +322,7 @@ class NodeListAttributeAsRectanglesDisplayer(NodeAttributeAsRectangleDisplayer):
                     allY.append(convertY(node['y']) +
                                 self.parameterValue['y offset'])
                     allW.append(self.parameterValue['width'])
-                    allH.append(self.computeHeight(\
-                            node[self.parameterValue['attribute']][i]))
+                    allH.append(self.computeHeight(vals[i]))
             style = DrawingStyle(self.parameterValue['colours'][i],
                                  self.parameterValue['colours'][i])
             canvas.drawRectangles(allX, allY, allW, allH, style,

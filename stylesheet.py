@@ -13,7 +13,7 @@ import util
 import colours
 from vrpexceptions import *
 
-padding = 200
+padding = 100
 cellTitleFontSize = 13
 gridCellPadding = 3
 gridDecorationStyle = style.DrawingStyle(lineColour=colours.lightgray,
