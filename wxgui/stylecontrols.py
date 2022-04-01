@@ -25,7 +25,7 @@ class StyleEditor(wx.Panel):
         # place parameters in a grid, itself in a scrolled window
         self.sw = wx.Panel(self, -1)
         # first column = parameter name, second column = editable value
-        self.gridSizer = wx.FlexGridSizer(20, 2, 5, 5)
+        self.gridSizer = wx.FlexGridSizer(50, 2, 5, 5)
         self.gridSizer.AddGrowableCol(0, 1)
         self.sw.SetSizer(self.gridSizer)
         
