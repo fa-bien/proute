@@ -53,6 +53,7 @@ class WxCanvas(canvas.Canvas):
         self.dc.Clear()
 
     def restrictDrawing(self, xmin, ymin, xmax, ymax):
+        xmin, ymin, xmax, ymax = int(xmin), int(ymin), int(xmax), int(ymax)
         self.dc.SetClippingRegion(xmin, self.height-ymax, xmax-xmin, ymax-ymin)
 
     def unrestrictDrawing(self):
