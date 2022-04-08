@@ -43,8 +43,8 @@ def convertFont(abstractFont):
 class WxCanvas(canvas.Canvas):
     def __init__(self, dc, width, height):
         self.dc = dc
-        self.width = width
-        self.height = height
+        self.width = round(width)
+        self.height = round(height)
         self.defaultLineThickness = 1
 
     # clear and set a white background
@@ -53,7 +53,7 @@ class WxCanvas(canvas.Canvas):
         self.dc.Clear()
 
     def restrictDrawing(self, xmin, ymin, xmax, ymax):
-        xmin, ymin, xmax, ymax = int(xmin), int(ymin), int(xmax), int(ymax)
+        xmin, ymin, xmax, ymax = round(xmin), round(ymin), round(xmax), round(ymax)
         self.dc.SetClippingRegion(xmin, self.height-ymax, xmax-xmin, ymax-ymin)
 
     def unrestrictDrawing(self):
@@ -117,7 +117,7 @@ class WxCanvas(canvas.Canvas):
             x, y, w, h = x, self.height-y, -w, -h
         elif referencePoint == 'southwest':
             x, y, w, h = x, self.height-y, w, -h
-        self.dc.DrawRectangle(x, y, w, h)
+        self.dc.DrawRectangle(round(x), round(y), round(w), round(h))
 
     # draw a list of rectangles with the same style
     # if a reference point is specified, it is used, otherwise the coordinates
@@ -140,55 +140,58 @@ class WxCanvas(canvas.Canvas):
                 x, y, w, h = x-w+1, self.height-y-h+1, w, h
             elif referencePoint == 'southwest':
                 x, y, w, h = x, self.height-y-h+1, w, h
-            self.dc.DrawRectangle(x, y, w, h)
+            self.dc.DrawRectangle(round(x), round(y), round(w), round(h))
 
     # draw a circle centered at coordinates x, y
     def drawCircle(self, x, y, r, style):
         self.setDrawingStyle(style)
-        self.dc.DrawCircle(x, self.height-y, r)
+        self.dc.DrawCircle(round(x), round(self.height-y), round(r))
 
     # draw a list of circles with the same colour style
     # parameters xs, ys, rs should be lists
     def drawCircles(self, xs, ys, rs, style):
         self.setDrawingStyle(style)
         for x, y, r in zip(xs, ys, rs):
-            self.dc.DrawCircle(x, self.height-y, r)
+            self.dc.DrawCircle(round(x), round(self.height-y), round(r))
 
     # draw a line
     def drawLine(self, x1, y1, x2, y2, style):
         self.setDrawingStyle(style)
-        self.dc.DrawLine(x1, self.height-y1, x2, self.height-y2)
+        self.dc.DrawLine(round(x1), round(self.height-y1),
+                         round(x2), round(self.height-y2))
 
     # draw a line
     def drawLines(self, x1s, y1s, x2s, y2s, style):
         self.setDrawingStyle(style)
         for x1, y1, x2, y2 in zip(x1s, y1s, x2s, y2s):
-            self.dc.DrawLine(x1, self.height-y1, x2, self.height-y2)
+            self.dc.DrawLine(round(x1), round(self.height-y1),
+                             round(x2), round(self.height-y2))
 
     # draw a polyline
     # x and y are lists
     def drawPolyline(self, x, y, style):
         self.setDrawingStyle(style)
-        points = [ (i, self.height-j) for i, j in zip(x, y) ]
+        points = [ (round(i), round(self.height-j)) for i, j in zip(x, y) ]
         self.dc.DrawLines(points)
         
     # draw a spline; each element in points is a 2-uple with x,y coordinates
     def drawSpline(self, points, style):
         self.setDrawingStyle(style)
-        self.dc.DrawSpline( [ (x, self.height-y) for x,y in points ])        
+        self.dc.DrawSpline( [ (round(x), round(self.height-y))
+                              for x,y in points ])        
     
     # draw a text label with top left corner at x, y
     def drawText(self, label, x, y,
                  font, foregroundColour, backgroundColour):
         self.setWritingStyle(font, foregroundColour, backgroundColour)
-        self.dc.DrawText(label, x, self.height-y)
+        self.dc.DrawText(label, round(x), round(self.height-y))
     
     # draw several text labels with top left corners given in xs, ys
     def drawTexts(self, labels, xs, ys,
                   font, foregroundColour, backgroundColour):
         self.setWritingStyle(font, foregroundColour, backgroundColour)
         for label, x, y in zip(labels, xs, ys):
-            self.dc.DrawText(label, x, self.height-y)
+            self.dc.DrawText(label, round(x), round(self.height-y))
     
     # draw a text label at x, y
     # this version allows to specify an angle and a reference point
@@ -227,13 +230,13 @@ class WxCanvas(canvas.Canvas):
 #         if angle is None:
 #             self.dc.DrawText(label, x, self.height-y)
 #         else:
-        self.dc.DrawRotatedText(label, x, self.height-y, angle)
+        self.dc.DrawRotatedText(label, round(x), round(self.height-y), angle)
         
     # draw a polygon
     # x and y are lists of point coordinates
     def drawPolygon(self, xs, ys, style):
         self.setDrawingStyle(style)
-        points = [ (x, self.height-y) for x, y in zip(xs, ys) ]
+        points = [ (round(x), round(self.height-y)) for x, y in zip(xs, ys) ]
         self.dc.DrawPolygon(points)
 
     # draw several polygons with the same style
@@ -242,7 +245,8 @@ class WxCanvas(canvas.Canvas):
     def drawPolygons(self, xss, yss, style):
         self.setDrawingStyle(style)
         for i, (xs, ys) in enumerate(zip(xss, yss)):
-            points = [ (x, self.height-y) for x, y in zip(xs, ys) ]
+            points = [ (round(x), round(self.height-y))
+                       for x, y in zip(xs, ys) ]
             self.dc.DrawPolygon(points)
 
     # draw a bitmap using the given north-west corner
@@ -250,7 +254,8 @@ class WxCanvas(canvas.Canvas):
         image = wx.Image( *bitmap.size )
         image.SetData( bitmap.convert("RGB").tobytes() )
         x, y = NWcorner
-        self.dc.DrawBitmap(image.ConvertToBitmap(), x, self.height-y)
+        self.dc.DrawBitmap(image.ConvertToBitmap(),
+                           round(x), round(self.height-y))
         
 # class used to paint on a wx thumbnail
 class WxThumbnailCanvas(WxCanvas):
@@ -296,12 +301,14 @@ class WxThumbnailCanvas(WxCanvas):
     # draw a line
     def drawLine(self, x1, y1, x2, y2, style):
         self.setDrawingStyle(style)
-        self.dc.DrawLine(x1, self.height-y1, x2, self.height-y2)
+        self.dc.DrawLine(round(x1), round(self.height-y1),
+                         round(x2), round(self.height-y2))
 
     # draw a spline; each element in points is a 2-uple with x,y coordinates
     def drawSpline(self, points, style):
         self.setDrawingStyle(style)
-        self.dc.DrawSpline( [ (x, self.height-y) for x,y in points ])
+        self.dc.DrawSpline( [ (round(x), round(self.height-y))
+                              for x,y in points ])
         
     # draw a text label with top left corner at x, y
     def drawText(self, label, x, y,
