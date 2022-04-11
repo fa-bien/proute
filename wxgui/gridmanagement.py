@@ -126,7 +126,8 @@ class GridManager(wx.Frame):
         # repaint using the new parameters
         events.postStyleSheetUpdateEvent(self)
         # update number of columns
-        self.nColumnsControl.SetValue(self.styleSheet.nColumnsInGrid)
+        if self.styleSheet.nColumnsInGrid:
+            self.nColumnsControl.SetValue(self.styleSheet.nColumnsInGrid)
 
     def geometryHandler(self, event):
         # adjust number of columns
