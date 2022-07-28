@@ -89,7 +89,7 @@ class VRXInputData(vrpdata.VrpInputData):
                         self.attributes['commodities'] = tokens[1:]
                 elif section == 'locations':
                     if tokens[0] != 'ANYWHERE':
-                        x, y = string.atof(tokens[1]), string.atof(tokens[2])
+                        x, y = float(tokens[1]), float(tokens[2])
                     else:
                         x = min( [ a['x'] for a in self.locations] )
                         y = min( [ a['y'] for a in self.locations] )
@@ -115,8 +115,8 @@ class VRXInputData(vrpdata.VrpInputData):
                                     'x': location['x'],
                                     'y': location['y'],
                                     'location': tokens[1],
-                                    'value': string.atof(tokens[2]),
-                                    'demands': [ string.atof(x)
+                                    'value': float(tokens[2]),
+                                    'demands': [ float(x)
                                                  for x in tokens[3:] ],
                                     'is depot': False,
                                     }
@@ -125,10 +125,10 @@ class VRXInputData(vrpdata.VrpInputData):
                 elif section == 'request times':
                     index = self.requestIDToIndex[tokens[0]]
                     self.requests[index]['release time'] = \
-                        string.atoi(tokens[1])
-                    self.requests[index]['due date'] = string.atoi(tokens[2])
+                        int(tokens[1])
+                    self.requests[index]['due date'] = int(tokens[2])
                     self.requests[index]['service time'] = \
-                        string.atoi(tokens[3])
+                        int(tokens[3])
         # design choice: one node per request
         self.nodes = self.requests
 
@@ -164,7 +164,7 @@ class VRXSolutionData(vrpdata.VrpSolutionData):
             elif tokens[0] == 'Route':
                 currentRoute = tokens[1]
             elif tokens[0] == 'Cost':
-                currentCost = string.atoi(tokens[1])
+                currentCost = int(tokens[1])
             elif tokens[0] == 'Start:':
                 currentStartTime = tokens[1]
             elif tokens[0] == 'Finish:':
@@ -172,9 +172,9 @@ class VRXSolutionData(vrpdata.VrpSolutionData):
             elif tokens[0] == 'Duration:':
                 currentDuration = tokens[1]
             elif tokens[0] == 'Capacity:':
-                currentCapacity = string.atoi(tokens[1])
+                currentCapacity = int(tokens[1])
             elif tokens[0] == 'Max' and tokens[1] == 'Load:':
-                currentMaxLoad = string.atoi(tokens[2])
+                currentMaxLoad = int(tokens[2])
             # we already read the last route -> add it and exit
             elif tokens[0] == 'Unassigned' and tokens[1] != 'cost':
                 self.routes.append(thisRoute)
@@ -232,7 +232,7 @@ class VRXSolutionData(vrpdata.VrpSolutionData):
                         elif field == 'Depart':
                             thisNode['departure time'] = value
                         elif field == 'Cumm' and prevField == 'load':
-                            thisNode['load'] = string.atoi(value)
+                            thisNode['load'] = int(value)
                 # finally add the node to current route
                 thisRoute['node information'].append(thisNode)
 
@@ -267,7 +267,7 @@ class VRX_CSVSolutionData(vrpdata.VrpSolutionData):
             elif tokens[0] == 'Vehicle':
                 thisRoute['vehicle'] = tokens[1]
             elif tokens[0] == 'Total' and tokens[1] == 'cost':
-                thisRoute['cost'] = string.atoi(tokens[2])
+                thisRoute['cost'] = int(tokens[2])
             # case of a new route
             elif len(tokens) > 2 and tokens[2] == 'Customer':
                 stage = 'route'

@@ -28,22 +28,22 @@ class MOOPInputData(vrpdata.VrpInputData):
             # header line
             if len(tokens) == 2:
                 if tokens[0] == 'S':
-                    self.attributes['# objectives'] = string.atoi(tokens[1])
+                    self.attributes['# objectives'] = int(tokens[1])
                 elif tokens[0] == 'B':
-                    self.attributes['starting point'] = string.atoi(tokens[1])
+                    self.attributes['starting point'] = int(tokens[1])
                 elif tokens[0] == 'E':
-                    self.attributes['ending point'] = string.atoi(tokens[1])
+                    self.attributes['ending point'] = int(tokens[1])
                 else:
                     pass # useless information for displaying
             elif len(tokens) == 3 and tokens[0] == 'U':
-                self.attributes['maximum duration'] = string.atoi(tokens[2])
+                self.attributes['maximum duration'] = int(tokens[2])
             # case where we read a node
             elif len(tokens) == 5:
                 thisNode = {'index': len(self.nodes),
                             'label':tokens[0],
-                            'x': string.atof(tokens[1]),
-                            'y': string.atof(tokens[2]),
-                            'scores': [ string.atoi(x) for x in tokens[3:] ],
+                            'x': float(tokens[1]),
+                            'y': float(tokens[2]),
+                            'scores': [ int(x) for x in tokens[3:] ],
                             'is depot': False}
                 self.nodes.append(thisNode)
             else:
@@ -72,7 +72,7 @@ class MOOPSolutionData(vrpdata.VrpSolutionData):
                 thisRoute = {}
                 thisRoute['index'] = cpt
                 thisRoute['node sequence'] = \
-                    [ string.atoi(x) for x in line[1:] ]
+                    [ int(x) for x in line[1:] ]
                 self.routes.append(thisRoute)
                 return
 

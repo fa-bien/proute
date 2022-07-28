@@ -33,7 +33,7 @@ class MCDARPInputData(vrpdata.VrpInputData):
             line = line.split()
             if len(line) == 4:
                 nVehicles, nDepots, nRequests, nNodes = \
-                    [ string.atoi(x) for x in line ]
+                    [ int(x) for x in line ]
                 self.attributes['directed'] = True
                 self.attributes['time matrix'] = [ [ 0 for i in range(nNodes)]
                                                    for j in range(nNodes) ]
@@ -44,29 +44,29 @@ class MCDARPInputData(vrpdata.VrpInputData):
             # case where we read a request
             elif len(line) == 9 and len(self.nodes) != nNodes:
                 thisNode = {}
-                thisNode['index'] = string.atoi(line[0])
+                thisNode['index'] = int(line[0])
                 thisNode['label'] = line[0]
                 thisNode['y'], thisNode['x'],\
                     thisNode['demand'], thisNode['service time'] = \
-                    [ string.atof(x) for x in line[1:5] ]
-                thisNode['destination'] = string.atoi(line[5])
-                thisNode['release time'] = string.atof(line[6])
-                thisNode['due date'] = string.atof(line[7])
-                thisNode['max ride time'] = string.atof(line[8])
+                    [ float(x) for x in line[1:5] ]
+                thisNode['destination'] = int(line[5])
+                thisNode['release time'] = float(line[6])
+                thisNode['due date'] = float(line[7])
+                thisNode['max ride time'] = float(line[8])
                 thisNode['is depot'] = False
                 thisNode['type'] = 'pickup'
                 self.nodes.append(thisNode)
             # case of a delivery node
             elif len(line) == 6 and len(self.nodes) >= nRequests:
                 thisNode = {}
-                thisNode['index'] = string.atoi(line[0])
-                thisNode['destination'] = string.atoi(line[0])
+                thisNode['index'] = int(line[0])
+                thisNode['destination'] = int(line[0])
                 thisNode['label'] = line[0]
-                thisNode['x'] = string.atof(line[2])
-                thisNode['y'] = string.atof(line[1])
-                thisNode['service time'] = string.atof(line[3])
-                thisNode['release time'] = string.atof(line[4])
-                thisNode['due date'] = string.atof(line[5])
+                thisNode['x'] = float(line[2])
+                thisNode['y'] = float(line[1])
+                thisNode['service time'] = float(line[3])
+                thisNode['release time'] = float(line[4])
+                thisNode['due date'] = float(line[5])
                 thisNode['is depot'] = False
                 thisNode['type'] = 'delivery'
                 thisNode['demand'] = 0
@@ -74,12 +74,12 @@ class MCDARPInputData(vrpdata.VrpInputData):
             # case of a depot node
             elif len(line) == 5 and len(self.nodes) >= nNodes - nDepots:
                 thisNode = {}
-                thisNode['index'] = string.atoi(line[0])
+                thisNode['index'] = int(line[0])
                 thisNode['label'] = line[0]
-#                 thisNode['x'] = string.atof(line[1])
-#                 thisNode['y'] = string.atof(line[2])
-                thisNode['release time'] = string.atof(line[3])
-                thisNode['due date'] = string.atof(line[4])
+#                 thisNode['x'] = float(line[1])
+#                 thisNode['y'] = float(line[2])
+                thisNode['release time'] = float(line[3])
+                thisNode['due date'] = float(line[4])
                 thisNode['is depot'] = True
                 thisNode['service time'] = 0
                 thisNode['type'] = 'depot'
@@ -87,7 +87,7 @@ class MCDARPInputData(vrpdata.VrpInputData):
             # line in the distance matrix
             elif len(line) == nNodes:
                 self.attributes['time matrix'][readLinesInMatrix] = \
-                    [ string.atof(x) for x in line ]
+                    [ float(x) for x in line ]
                 readLinesInMatrix += 1
             # this clause should never be reached
             else:
@@ -204,11 +204,11 @@ class MCDARPSolutionData(vrpdata.VrpSolutionData):
                 tmpRideTime = []
                 while len(line) > 1 and line[1] == '(':
                     tokens = line.split()
-                    tmpNodes.append(string.atoi(tokens[1]))
-                    tmpStartTime.append(string.atof(tokens[5]))
+                    tmpNodes.append(int(tokens[1]))
+                    tmpStartTime.append(float(tokens[5]))
                     pwet = tokens[0].split('=')
                     if len(pwet) == 2:
-                        tmpRideTime.append(string.atof(pwet[1][:-1]))
+                        tmpRideTime.append(float(pwet[1][:-1]))
                     else:
                         tmpRideTime.append(0)
                     line = fin.readline()

@@ -26,17 +26,17 @@ class CVRPInputData(vrpdata.VrpInputData):
             line = line.split()
             if len(line) > 3:
                 self.attributes['directed'] = False
-                self.attributes['capacity'] = string.atoi(line[1])
-                self.attributes['maximum duration'] = string.atoi(line[2])
+                self.attributes['capacity'] = int(line[1])
+                self.attributes['maximum duration'] = int(line[2])
             elif len(line) >= 2:
                 thisNode = {}
                 thisNode['index'] = cpt
                 thisNode['label'] = str(cpt)
                 thisNode['is depot'] = True if cpt == 0 else False
-                thisNode['demand'] = string.atoi(line[2])\
+                thisNode['demand'] = int(line[2])\
                     if len(line) > 2 else 0
-                thisNode['x'] = string.atof(line[0])
-                thisNode['y'] = string.atof(line[1])
+                thisNode['x'] = float(line[0])
+                thisNode['y'] = float(line[1])
                 self.nodes.append(thisNode)
                 cpt += 1
             else:
@@ -61,9 +61,9 @@ class VRPLIBInputData(vrpdata.VrpInputData):
                 if tokens[0] == 'NAME':
                     self.name = tokens[2]
                 elif tokens[0] == 'DIMENSION':
-                    nNodes = string.atoi(tokens[2])
+                    nNodes = int(tokens[2])
                 elif tokens[0] == 'CAPACITY':
-                    self.attributes['capacity'] = string.atoi(tokens[2])
+                    self.attributes['capacity'] = int(tokens[2])
                 elif tokens[0] == 'NODE_COORD_SECTION':
                     section = 'coords'
                     self.nodes = [ {} for x in range(nNodes) ]
@@ -74,8 +74,8 @@ class VRPLIBInputData(vrpdata.VrpInputData):
                 if tokens[0] == 'DEMAND_SECTION':
                     section = 'demand'
                 elif len(tokens) == 3:
-                    index = string.atoi(tokens[0])
-                    x, y = [ string.atof(n) for n in tokens[1:] ]
+                    index = int(tokens[0])
+                    x, y = [ float(n) for n in tokens[1:] ]
                     index -= 1
                     label = tokens[0]
                     self.nodes[index]['index'] = index
@@ -90,8 +90,8 @@ class VRPLIBInputData(vrpdata.VrpInputData):
                 if tokens[0] == 'DEPOT_SECTION':
                     section = 'depot'
                 elif len(tokens) == 2:
-                    self.nodes[string.atoi(tokens[0])-1]['demand'] = \
-                        string.atoi(tokens[1])
+                    self.nodes[int(tokens[0])-1]['demand'] = \
+                        int(tokens[1])
                 else:
                     raise vrpexceptions.VrpInputFileFormatException('vrplib',
                                                                     fName)
@@ -99,7 +99,7 @@ class VRPLIBInputData(vrpdata.VrpInputData):
                 if tokens[0] == 'EOF':
                     section = 'over'
                 elif len(tokens) == 1:
-                    self.nodes[string.atoi(tokens[0])-1]['is depot'] = True
+                    self.nodes[int(tokens[0])-1]['is depot'] = True
                 else:
                     raise vrpexceptions.VrpInputFileFormatException('vrplib',
                                                                     fName)
@@ -143,9 +143,9 @@ class VRPLIBSolutionData(vrpdata.VrpSolutionData):
                 if tokens[0] == 'NAME':
                     self.name = tokens[2]
                 elif tokens[0] == 'ROUTES':
-                    nRoutes = string.atoi(tokens[2])
+                    nRoutes = int(tokens[2])
                 elif tokens[0] == 'COST':
-                    self.attributes['cost'] = string.atof(tokens[2])
+                    self.attributes['cost'] = float(tokens[2])
                 elif tokens[0] == '#R' or tokens[0] == 'SOLUTION_SECTION':
                     section = 'routes'
                     self.routes = [ {} for x in range(nRoutes) ]
@@ -158,12 +158,12 @@ class VRPLIBSolutionData(vrpdata.VrpSolutionData):
                 elif tokens[0][0] == '#':
                     pass
                 elif len(tokens) >= 6:
-                    nodes = [ string.atoi(n) for n in tokens[5:] ]
-                    index = string.atoi(tokens[0]) - 1
+                    nodes = [ int(n) for n in tokens[5:] ]
+                    index = int(tokens[0]) - 1
                     self.routes[index]['node sequence'] = nodes
-                    self.routes[index]['load'] = string.atoi(tokens[1])
-                    self.routes[index]['cost'] = string.atof(tokens[2])
-                    self.routes[index]['length'] = string.atof(tokens[3])
+                    self.routes[index]['load'] = int(tokens[1])
+                    self.routes[index]['cost'] = float(tokens[2])
+                    self.routes[index]['length'] = float(tokens[3])
                     self.routes[index]['index'] = index
                 else:
                     raise vrpexceptions.SolutionFileFormatException('vrplib',
@@ -172,7 +172,7 @@ class VRPLIBSolutionData(vrpdata.VrpSolutionData):
                 if tokens[0] == 'END':
                     section = 'over'
                 elif len(tokens) == 1:
-                    depot = string.atoi(tokens[0])-1
+                    depot = int(tokens[0])-1
                     for r in self.routes:
                         r['node sequence'] = \
                             [depot] + r['node sequence'] + [depot]

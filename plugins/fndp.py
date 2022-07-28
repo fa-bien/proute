@@ -31,17 +31,17 @@ class FNDPInputData(vrpdata.VrpInputData):
                         self.attributes['service time'], \
                         self.attributes['depot ID'], \
                         self.attributes['period duration'] = \
-                        [ string.atoi(x) for x in tokens ]
+                        [ int(x) for x in tokens ]
                 elif len(tokens) == self.attributes['# periods'] and \
                         not 'production schedule' in self.attributes:
-                    self.attributes['production schedule'] = [ string.atoi(x)
+                    self.attributes['production schedule'] = [ int(x)
                                                                for x in tokens ]
                 elif len(tokens) == 5:
                     thisNode = {}
-                    thisNode['index'] = string.atoi(tokens[0])
-                    thisNode['label'] = string.atoi(tokens[0])
+                    thisNode['index'] = int(tokens[0])
+                    thisNode['label'] = int(tokens[0])
                     thisNode['demand'], thisNode['x'], thisNode['y'], \
-                        thisNode['capacity'] = [ string.atof(x)
+                        thisNode['capacity'] = [ float(x)
                                                  for x in tokens[1:] ]
                     thisNode['is depot'] = \
                         thisNode['index'] == self.attributes['depot ID']
@@ -71,12 +71,12 @@ class FNDPSolutionData(vrpdata.VrpSolutionData):
                     vrpexceptions.SolutionFileFormatException(self.problemType,
                                                               fName)
             else:
-                nodes = [ string.atoi(x.split('(')[0])
+                nodes = [ int(x.split('(')[0])
                           for x in tokens[6:-3] ]
                 rest = [ x.split('(')[1][:-1].split(':') for x in tokens[6:-3] ]
-                period = [ string.atoi(x[0]) for x in rest ]
-                qty = [ string.atoi(x[1]) for x in rest ]
-                startingTime = string.atoi(tokens[5][:-1])
+                period = [ int(x[0]) for x in rest ]
+                qty = [ int(x[1]) for x in rest ]
+                startingTime = int(tokens[5][:-1])
                 routeNodes = [ {'index': node, 'quantity': quantity,
                                 'period': period}
                                for node, quantity, period in

@@ -28,7 +28,7 @@ class PVRPInputData(vrpdata.VrpInputData):
         # load a Cordeau, Gendreau and Laporte instance
         cpt = 0
         for line in open(fName).readlines():
-            value = [ string.atof(x) for x in line.split() ]
+            value = [ float(x) for x in line.split() ]
             if len(value) == 4 and cpt == 0:
                 if value[0] != 1:
                     print('Wrong file type for PVRP instance')
@@ -96,11 +96,11 @@ class PVRPSolutionData(vrpdata.VrpSolutionData):
             else:
                 thisRoute = {}
                 thisRoute['index'] = cpt
-                thisRoute['day'] = string.atoi(line[0])
-                thisRoute['vehicle'] = string.atoi(line[1])
-                thisRoute['cost'] = string.atof(line[2])
+                thisRoute['day'] = int(line[0])
+                thisRoute['vehicle'] = int(line[1])
+                thisRoute['cost'] = float(line[2])
                 thisRoute['node sequence'] = \
-                    [ string.atoi(x) for x in line[3:] ]
+                    [ int(x) for x in line[3:] ]
                 self.routes.append(thisRoute)
                 cpt += 1
 
@@ -132,7 +132,7 @@ class PVRPLogSolutionData(PVRPSolutionData):
             elif len(line) >= 10 and line[9] == 'Route':
                 thisRoute = {}
                 thisRoute['index'] = len(self.routes)
-                day = string.atoi(line[12])
+                day = int(line[12])
                 thisRoute['day'] = day
                 if day in vehicleForDay:
                     thisRoute['vehicle'] = vehicleForDay[day]
@@ -141,7 +141,7 @@ class PVRPLogSolutionData(PVRPSolutionData):
                     thisRoute['vehicle'] = 1
                     vehicleForDay[day] = 2
                 thisRoute['node sequence'] = \
-                    [0] + [ string.atoi(x) for x in line[15:] ] + [0]
+                    [0] + [ int(x) for x in line[15:] ] + [0]
                 self.routes.append(thisRoute)
                 cpt += 1
             else: continue

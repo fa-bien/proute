@@ -35,7 +35,7 @@ class CTPInputData(vrpdata.VrpInputData):
         f = open(fName, 'r')
         line = f.readline()
         while line[0] == '#': line = f.readline()
-        value = [ string.atoi(x) for x in line.split() ]
+        value = [ int(x) for x in line.split() ]
         self.attributes['number of nodes'] = value[0]
         self.attributes['number of vehicles'] = value[1]
         self.attributes['capacity'] = value[2]
@@ -50,48 +50,48 @@ class CTPInputData(vrpdata.VrpInputData):
             while line[0] == '#': line = f.readline()
             tokens = line.split()
             thisNode = {}
-            thisNode['index'] = string.atoi(tokens[0])
+            thisNode['index'] = int(tokens[0])
             if len(tokens) > 3:
                 thisNode['label'] = reduce(lambda x,y: x + ' ' + y, tokens[3:])
             else:
                 thisNode['label'] = tokens[0]
             thisNode['is depot'] = True if thisNode['index'] == 0 else False
-            thisNode['x'] = string.atof(tokens[1])
-            thisNode['y'] =  string.atof(tokens[2])
+            thisNode['x'] = float(tokens[1])
+            thisNode['y'] =  float(tokens[2])
             # we can finally add this node
             self.nodes.append(thisNode)
         # section 3: distance matrix
         while len(self.attributes['distance matrix']) < len(self.nodes):
             line = f.readline()
             while line[0] == '#': line = f.readline()
-            value = [ string.atoi(x) for x in line.split() ]
+            value = [ int(x) for x in line.split() ]
             self.attributes['distance matrix'].append(value)
         # section 4: opening costs
         for n in range(len(self.nodes)-1):
             line = f.readline()
             while line[0] == '#': line = f.readline()
-            value = [ string.atoi(x) for x in line.split() ]
+            value = [ int(x) for x in line.split() ]
             self.nodes[value[0]]['opening cost'] = value[1]
         # section 5: population sizes (aka demand)
         self.nodes[0]['demand'] = 0
         for n in range(len(self.nodes)-1):
             line = f.readline()
             while line[0] == '#': line = f.readline()
-            value = [ string.atoi(x) for x in line.split() ]
+            value = [ int(x) for x in line.split() ]
             self.nodes[value[0]]['baseline demand'] = value[1]
         # section 6: capacity
         self.nodes[0]['capacity'] = 0
         for n in range(len(self.nodes)-1):
             line = f.readline()
             while line[0] == '#': line = f.readline()
-            value = [ string.atoi(x) for x in line.split() ]
+            value = [ int(x) for x in line.split() ]
             self.nodes[value[0]]['capacity'] = value[1]
         # section 7: stochastic samples
         sampleFactors = [ [] for node in self.nodes ]
         for n in range(nSamples):
             line = f.readline()
             while line[0] == '#': line = f.readline()
-            samples = [ string.atof(x) / zeta for x in line.split() ]
+            samples = [ float(x) / zeta for x in line.split() ]
             # read sample values for 1 sample
             for index, sample in enumerate(samples):
                 sampleFactors[index+1].append(sample)
@@ -138,22 +138,22 @@ class CTPSolutionData(vrpdata.VrpSolutionData):
             toks = string.replace(string.replace(line[0], ']', ' '),
                                   '[', ' ').split()
             if line[0][0] == 'x':
-                route = string.atoi(toks[3])
-                fromNode = string.atoi(toks[1])
-                toNode = string.atoi(toks[2])
-                flow = string.atoi(line[2])
+                route = int(toks[3])
+                fromNode = int(toks[1])
+                toNode = int(toks[2])
+                flow = int(line[2])
                 # now we can add this new arc to the proper route
                 arc = {}
                 arc['from'], arc['to'], arc['flow'] = fromNode, toNode, flow
                 self.routes[route]['arcs'].append(arc)
             elif line[0][0] == 'z':
-                route = string.atoi(toks[2])
-                node = string.atoi(toks[1])
+                route = int(toks[2])
+                node = int(toks[1])
                 self.routes[route]['node information'].append( {'index': node} )
                 self.nodes[node]['open delivery center'] = True
             elif line[0][0] == 'y':
-                i = string.atoi(toks[1])
-                j = string.atoi(toks[2])
+                i = int(toks[1])
+                j = int(toks[2])
                 self.nodes[i]['covered by'] = j
 
 # style section

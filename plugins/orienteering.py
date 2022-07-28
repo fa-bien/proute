@@ -24,19 +24,19 @@ class TOPInputData(vrpdata.VrpInputData):
             tokens = line.split()
             if len(tokens) == 2:
                 if tokens[0] == 'n':
-                    self.attributes['# nodes'] = string.atoi(tokens[1])
+                    self.attributes['# nodes'] = int(tokens[1])
                 elif tokens[0] == 'm':
-                    self.attributes['# vehicles'] = string.atoi(tokens[1])
+                    self.attributes['# vehicles'] = int(tokens[1])
                 elif tokens[0] == 'tmax':
-                    self.attributes['Tmax'] = string.atof(tokens[1])
+                    self.attributes['Tmax'] = float(tokens[1])
                 else:
                     print('Incorrect file format for', fName)
                     sys.exit(0)
             elif len(tokens) == 3:
                 thisNode = {'index': len(self.nodes)}
-                thisNode['x'] = string.atof(tokens[0])
-                thisNode['y'] = string.atof(tokens[1])
-                thisNode['profit'] = string.atof(tokens[2])
+                thisNode['x'] = float(tokens[0])
+                thisNode['y'] = float(tokens[1])
+                thisNode['profit'] = float(tokens[2])
                 thisNode['label'] = str(len(self.nodes))
                 thisNode['is depot'] = len(self.nodes) == 0 or \
                     len(self.nodes) == self.attributes['# nodes'] - 1
@@ -59,10 +59,10 @@ class TOPSolutionData(vrpdata.VrpSolutionData):
             if tokens[0] == 'Actual' and tokens[1] == 'tours':
                 self.routes = []
             elif tokens[0] == 'Expected' and tokens[1] == 'profit':
-                self.attributes['profit'] = string.atof(tokens[3])
+                self.attributes['profit'] = float(tokens[3])
             elif tokens[0] == 'Total' and tokens[1] == 'time' \
                     and tokens[2] == '=':
-                self.attributes['duration'] = string.atof(tokens[3])
+                self.attributes['duration'] = float(tokens[3])
             elif tokens[0] == 'Tour:':
                 nodes = eval('[' + tokens[1] + ']')
                 thisRoute = {'index': len(self.routes),
@@ -83,7 +83,7 @@ class TOPStudentSolutionData(vrpdata.VrpSolutionData):
             if tokens[0] == 'route' and tokens[1][-1] == ':':
                 nodes = eval('[' + tokens[2] + ']')
                 print(nodes)
-                thisRoute = {'index': string.atoi(tokens[1][:-1]),
+                thisRoute = {'index': int(tokens[1][:-1]),
                              'node sequence': nodes}
                 self.routes.append(thisRoute)
                 

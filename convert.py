@@ -46,4 +46,4 @@ if __name__ == '__main__':
             print('Exception while trying to load the instance:', e)
             sys.exit(0)
         #
-        myVrp.storeAsPIF(outputFileName)
+        myVrp.storeAsPIF(outputFileName, sep=';')
