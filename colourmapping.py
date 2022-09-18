@@ -74,7 +74,7 @@ class Gradient(ColourMapping):
                 offset * self.colourDifference[index].blue
             alpha = self.colours[index].alpha + \
                 offset * self.colourDifference[index].alpha
-            return style.Colour(red, green, blue, alpha)
+            return style.Colour(int(red), int(green), int(blue), int(alpha))
 
 # g = Gradient()
 # print g[0]
