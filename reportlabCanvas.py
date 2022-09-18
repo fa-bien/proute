@@ -324,15 +324,19 @@ class ReportlabCanvas(Canvas):
     def drawBitmap(self, bitmap, NWcorner):
         x, y = NWcorner
         w, h = bitmap.size
-        # import reportlab
-        # img = reportlab.pdfgen.canvas.ImageReader(bitmap)
+
+        import reportlab
+        img = reportlab.pdfgen.canvas.ImageReader(bitmap)
+
+        # Note: the following does not work with recent versions of reportlab
         # ugly workaround since the previous commented method doesn't work with
         # all versions of reportlab
-        import io
-        dummy = io.StringIO()
-        bitmap.save(dummy, format='png')
-        dummy.seek(0)
-        import reportlab
-        img = reportlab.pdfgen.canvas.ImageReader(dummy)
+        # import io
+        # dummy = io.StringIO()
+        # bitmap.save(dummy, format='png')
+        # dummy.seek(0)
+        # import reportlab
+        # img = reportlab.pdfgen.canvas.ImageReader(dummy)
+
         self.canvas.drawImage(img, x, y-h, w, h)
         
