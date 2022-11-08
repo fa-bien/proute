@@ -2,6 +2,7 @@
 # File created during the fall of 2010 (northern hemisphere) by Fabien Tricoire
 # fabien.tricoire@univie.ac.at
 #
+from collections import defaultdict
 import string
 import sys
 import os
@@ -261,7 +262,7 @@ class GoogleMapsRoutes( basestyles.RouteColourDisplayer ):
                 not (isinstance(x, dict) or isinstance(x, list))
             self.parameterInfo['attribute'] = \
                 RouteAttributeParameterInfo(solutionData, acceptable)
-            self.mapping = {}
+            self.mapping = defaultdict(lambda: len(self.mapping))
             self.values = set([ route[self.parameterValue['attribute']]
                                 for route in solutionData.routes ])
             for v in self.values:
